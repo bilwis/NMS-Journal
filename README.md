@@ -7,4 +7,6 @@ This repository won't be of much use without the SQL files to set up the databas
 
 Currently, this is more of a versioning enabled backup for myself. I can not promise that this'll ever be finished or that I will release it under any form of license, but you are free to look around the source if you somehow got lost and found my repo. 
 
+Visit https://nms.bilwis.de to see this in action, if I didn't screw it up.  
+
 Take care, Traveller!
