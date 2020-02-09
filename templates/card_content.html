@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div metal:define-macro="planet" class="card_table">
+        <table>
+            <tr>
+                <th>Biome</th>
+                <td tal:content="child_card/biome">Temperate</td>
+            </tr>
+            <tr>
+                <th>Resources</th>
+                <td tal:content="child_card/resources">Copper, Indium, Ancient Bones</td>
+            </tr>
+            <tr>
+                <th>Discovery</th>
+                <td tal:content="child_card/discovery_date">2020-02-04</td>
+            </tr>
+            <tr>
+                <th>Discoverer</th>
+                <td tal:content="child_card/discoverer">bilwis</td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

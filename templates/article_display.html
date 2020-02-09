@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html>
+<body>
+	<div metal:define-macro="article_display">
+		<div tal:repeat="article articles" class="article_box">
+		<table tal:attributes="style article/header_style" class="article_header">
+			<tr>
+				<td colspan="3" tal:content="article/heading" class="article_heading"></td>
+			</tr>
+			<tr>
+				<td  class="article_source"><a tal:content="article/source" tal:attributes="href article/source_url"></a><span class="right_arrow"/></td>
+				<td></td>
+				<td tal:content="article/timestamp" class="article_timestamp"></td>
+			</tr>
+		</table>
+		<span tal:content="structure article/content" class="article_content"></span>
+		</div>
+	</div>
+</body>
+</html>	

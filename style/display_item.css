@@ -1,0 +1,347 @@
+@charset "utf-8";
+/* CSS Document */
+
+@import url("../webfonts/GeoSans_Light_Regular/stylesheet.css");
+@import url("../webfonts/Portal_Glyphs_NMS/stylesheet.css");
+@import url("stylesheet.css");
+@import url("colors.php");
+
+
+body {
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    font-size: 20px;
+    font-family: GeoSans Light Regular, Georgia;
+    letter-spacing: 0.6px;
+
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+input[type='text'] {
+    font-family: GeoSans Light Regular, Georgia;
+    letter-spacing: 0.6px;
+    font-size: 24px;
+    text-align: center;
+    font-weight: 700;
+}
+
+button {
+    font-family: GeoSans Light Regular, Georgia;
+    font-size: 20px;
+    letter-spacing: 0.6px;
+    color: var(--header-text-color);
+    background-color: var(--header-color);
+    border: 1px solid var(--border-color);
+    padding: 10px 10px;
+    margin: 5px 0px;
+}
+
+button:hover {
+    background-color: var(--header-highlight-color);
+}
+
+img {
+    border-radius: 0px;
+    border: 1px solid var(--border-color);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80%;
+    height: auto;
+}
+
+h3 {
+    margin-top: 3rem;
+}
+
+a {
+    color: inherit;
+    font-weight: 700;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:active {
+    text-decoration: underline;
+}
+
+.page_header
+{
+    font-size: 50px;
+}
+
+.context_str
+{
+    margin-top: 1rem;
+}
+
+.img_box
+{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.children_header {
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.children {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80%;
+
+    box-sizing: border-box;
+}
+
+.child_card {
+    margin: 10px 20px;
+
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+
+    background-color: var(--header-color);
+    border: 1px solid var(--border-color);
+    
+    font-size: 16px;
+}
+
+.card_image img {
+    max-width: 100%;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.card_header {
+    border: 1px solid var(--border-color);
+    margin: -10px 0 0 -20px;
+    height: 50px;
+    padding: 12px 0px 10px 0px;
+    width: calc(100% + 40px);
+    box-sizing: border-box;
+
+    font-size: 20px;
+    text-align: center;
+
+    font-weight: 900;
+}
+
+.card_type {
+    text-align: center;
+    text-transform: capitalize;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+.card_table table
+{
+    width: 100%;
+    border-collapse: separate;
+    background-color: var(--header-highlight-color);
+    border: 1px solid black;
+    border-spacing: 5px 10px;
+}
+
+
+.slide-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    border: solid var(--header-color);
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 5px;
+    background: none;
+}
+
+.prev-arrow {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.next-arrow {
+    right: 0%;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.add_entry
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    display: table;
+    box-sizing: border-box;
+}
+
+.add_entry_button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    
+    font-family: GeoSans Light Regular, Georgia;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.6px;
+    color: var(--header-text-color);
+    background-color: var(--header-color);
+    border: 1px solid var(--border-color);
+    padding: 10px 10px;
+    margin: 0px 10px;
+}
+
+.add_entry_button:hover {
+    text-decoration: none;
+    background-color: var(--header-highlight-color);
+}
+
+.entry_form {
+    display: block;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 60px;
+}
+
+.entry_heading {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    padding: 10px 25px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    background-color: var(--header-color);
+    color: var(--header-text-color);
+
+}
+
+label[for="heading"] {
+    display: none;
+}
+
+.entry_button_table {
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.entry_button_table td {
+    width: 33%;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+.entry_form button {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.diary_header {
+    text-align: center;
+}
+
+.article_header {
+    border: 1px solid var(--border-color);
+    margin: -10px 0 0 -20px;
+    height: 70px;
+    padding: 10 0 10 0;
+    width: calc(100% + 40px);
+    box-sizing: border-box;
+    border-collapse: collapse;
+
+}
+
+.article_header td {
+    border: 0px solid var(--border-color);
+}
+
+.article_heading {
+    font-size: 24px;
+    text-align: center;
+
+    font-weight: 900;
+    vertical-align: bottom;
+}
+
+.right_arrow {
+    border: solid hsla(0, 0%, 0%, 0.50);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    margin: 3px 0px 1px 3px;
+}
+
+.article_source {
+    width: 33%;
+    text-align: left;
+    padding-left: 5%;
+    vertical-align: top;
+}
+
+.article_source a {
+    color: inherit;
+    font-weight: 700;
+}
+
+.article_source a:link {
+    text-decoration: none;
+}
+
+.article_source a:visited {
+    text-decoration: none;
+}
+
+.article_source a:hover {
+    text-decoration: underline;
+}
+
+.article_source a:active {
+    text-decoration: underline;
+}
+
+.article_timestamp {
+    width: 33%;
+    text-align: right;
+    padding-right: 5%;
+    vertical-align: top;
+
+}
+
+.article_box {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 60px;
+    max-width: 80%;
+
+    box-sizing: border-box;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    background-color: var(--header-color);
+    border: 1px solid var(--border-color);
+}

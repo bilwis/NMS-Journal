@@ -1,0 +1,11 @@
+{
+	"ecosystem" :
+	[
+		"Ground", "Air", "Water", "Caves", "Other"
+	],
+
+	"activity":
+	[
+		"Nocturnal", "Diurnal", "Unknown", "Biurnal"
+	]
+}

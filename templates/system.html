@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+
+<head>
+    <title tal:content="system_name">Untitled Document</title>
+    <tal:block condition="verified" metal:use-macro="article_entry.html/tinymce_load" />
+    <tal:block condition="verified" metal:use-macro="article_entry.html/tinymce_setup" />
+
+    <link rel="stylesheet" type="text/css" href="../style/system.css" />
+</head>
+
+<body>
+    <h1 class="system_name" tal:content="system_name">System name</h1>
+    <h3 class="region_str"><i>Star System in the <span tal:content="region_name">XXX</span> Region.</i></h3>
+    <h5 class="disco_str">Discovered on <span tal:content="discovery_date">XX-XX-XXXX</span> by <span tal:content="discoverer">bilwis</span></h5>
+
+    <p><img class="cover_img" tal:attributes="src screenshot_path; alt system_name" src="pics/275850_20160828155312_1.png" width="1000px" alt="" /></p>
+
+
+
+    <table width="1000" border="1" class="info_table">
+        <tbody>
+            <tr>
+                <th scope="col">Spectral Class</th>
+                <th scope="col">Water</th>
+                <th scope="col">Lifeform</th>
+                <th scope="col">Wealth</th>
+                <th scope="col">Economy</th>
+                <th scope="col">Conflict</th>
+                <th scope="col">Planets</th>
+                <th scope="col">Moons</th>
+                <th scope="col">Special</th>
+            </tr>
+            <tr>
+                <td tal:content="spectral_class">O</td>
+                <td tal:content="water">false</td>
+                <td tal:content="lifeform">Korvax</td>
+                <td tal:content="econ_wealth">Rich</td>
+                <td tal:content="econ_type">Science</td>
+                <td tal:content="conflict_level">Peaceful</td>
+                <td tal:content="planets">3</td>
+                <td tal:content="moons">1</td>
+                <td tal:content="special">None</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br /><br />
+    <!--<p class="glyph">2090026DD172</p> !-->
+
+    <h3 class="diary_header">DIARY ENTRIES</h3>
+
+    <tal:block condition="verified" metal:use-macro="article_entry.html/form" />
+
+    <tal:block conditions="articles" metal:use-macro="article_display.html/article_display" />
+</body>
+
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Planet Entry Form</title>
+
+    <link rel="stylesheet" type="text/css" href="../style/entry.css" />
+    <script src="../libs/jquery-3.4.1.js"></script>
+    <link href="../libs/flexdatalist/jquery.flexdatalist.min.css" rel="stylesheet" type="text/css" />
+    <script src="../libs/flexdatalist/jquery.flexdatalist.min.js"></script>
+    <script src="../js/entry_image_resize.js"></script>
+
+    <style>
+        .glyph_code_entry {
+            font-family: "Portal Glyphs NMS" !important;
+            letter-spacing: 20px !important;
+            font-size: 40px !important;
+            text-align: center;
+            text-shadow: 0 0 8px cyan;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <h1>Planet Entry Form</h1>
+
+    <div class="container">
+
+        <table>
+            <form enctype="multipart/form-data" method="post" action="../entry/planet_upload.php">
+                <tr>
+                    <td class="entry_label"><label for="orig_name">Original Name</label></td>
+                    <td class="entry_content"><input type="text" id="orig_name" name="orig_name" /></td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="new_name">Name</label></td>
+                    <td class="entry_content"><input type="text" id="new_name" name="new_name" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="system">System</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" data-selection-required="true" list="system_list" id="system" name="system" tal:attributes="value preselect_name" />
+                        <datalist id="system_list">
+                            <option tal:repeat="system systems" tal:attributes="value system/0" tal:content="system/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="entry_label">
+                        <label for="biome">Biome</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="biome_list" id="biome" name="biome" />
+                        <datalist id="biome_list">
+                            <option tal:repeat="biome biomes" tal:attributes="value biome/0" tal:content="biome/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="entry_label">
+                        <label for="weather">Weather</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="weather_list" id="weather" name="weather" />
+                        <datalist id="weather_list">
+                            <option tal:repeat="weather weathers" tal:attributes="value weather/0" tal:content="weather/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="entry_label">
+                        <label for="sentinel_level">Sentinel Level</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="sentinel_level_list" id="sentinel_level" name="sentinel_level" />
+                        <datalist id="sentinel_level_list">
+                            <option tal:repeat="sentinel_level sentinel_levels" tal:attributes="value sentinel_level/0" tal:content="sentinel_level/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="entry_label">
+                        <label for="fauna_level">Fauna Level</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="fauna_level_list" id="fauna_level" name="fauna_level" />
+                        <datalist id="fauna_level_list">
+                            <option tal:repeat="fauna_level life_levels" tal:attributes="value fauna_level/0" tal:content="fauna_level/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="entry_label">
+                        <label for="flora_level">Flora Level</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="flora_level_list" id="flora_level" name="flora_level" />
+                        <datalist id="flora_level_list">
+                            <option tal:repeat="flora_level life_levels" tal:attributes="value flora_level/0" tal:content="flora_level/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="entry_label">
+                        <label for="resources">Resources</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="resources_list" multiple="multiple" id="resources" name="resources" />
+                        <datalist id="resources_list">
+                            <option tal:repeat="resource resources" tal:attributes="value resource/0" tal:content="resource/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="entry_label">
+                        <label for="glyph_code">Glyph Code</label></td>
+                    <td class="entry_content"><input class="glyph_code_entry" type="text" id="glyph_code" name="glyph_code" maxlength="12" minlength="12" />
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="entry_label">
+                        <label for="discovery_date">Date of Discovery</label></td>
+                    <td class="entry_content"><input type="date" id="discovery_date" name="discovery_date" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="discoverer">Discoverer</label></td>
+                    <td class="entry_content"><input type="text" id="discoverer" name="discoverer" value="bilwis" />
+                    </td>
+                </tr>
+
+                <input type="hidden" id="full_img" name="full_img" />
+                <input type="hidden" id="header_img" name="header_img" />
+                <input type="hidden" id="thumb_img" name="thumb_img" />
+
+                <input  class="submit_button" id="submit_button"  type="submit" />
+            </form>
+            <tr>
+                <td class="entry_label">
+                    <label for="screenshot">Screenshot</label></td>
+                <td class="entry_content"><input type="file" id="screenshot" name="screenshot" accept="image/png, image/jpeg" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

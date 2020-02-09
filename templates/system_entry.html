@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>System Entry</title>
+
+    <link rel="stylesheet" type="text/css" href="style/entry.css" />
+    <script src="../libs/jquery-3.4.1.js"></script>
+    <link href="../libs/flexdatalist/jquery.flexdatalist.min.css" rel="stylesheet" type="text/css" />
+    <script src="../libs/flexdatalist/jquery.flexdatalist.min.js"></script>
+    <script src="../js/entry_image_resize.js"></script>
+
+</head>
+
+<body>
+
+    <h1>System Entry Form</h1>
+
+    <div class="container">
+        <table>
+            <form enctype="multipart/form-data" method="post" action="../entry/system_upload.php">
+
+                <tr>
+                    <td class="entry_label"><label for="orig_name">Original Name</label></td>
+                    <td class="entry_content"><input type="text" id="orig_name" name="orig_name" /></td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="new_name">Name</label></td>
+                    <td class="entry_content"><input type="text" id="new_name" name="new_name" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="spectral_class">Spectral Class</label></td>
+                    <td class="entry_content"><input type="text" id="spectral_class" name="spectral_class" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="water">Water?</label></td>
+                    <td class="entry_content"><input type="checkbox" id="water" name="water" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="region">Region</label></td>
+                    <td class="entry_content"><input class="flexdatalist" data-min-length='0' type="text" list="region_list" id="region" name="region" tal:attributes="value preselect_name"/>
+                        <datalist id="region_list">
+                            <option tal:repeat="region regions" tal:attributes="value region/0" tal:content="region/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="lifeform">Lifeform</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" data-selection-required="true" list="lifeform_list" id="lifeform" name="lifeform" />
+                        <datalist id="lifeform_list">
+                            <option tal:repeat="lifeform lifeforms" tal:attributes="value lifeform/0" tal:content="lifeform/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="econ_type">Economy type</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" data-selection-required="true" list="econ_type_list" id="econ_type" name="econ_type" />
+                        <datalist id="econ_type_list">
+                            <option tal:repeat="econ_type econ_types" tal:attributes="value econ_type/0" tal:content="econ_type/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="econ_wealth">Economy wealth</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" data-selection-required="true" list="econ_wealth_list" id="econ_wealth" name="econ_wealth" />
+                        <datalist id="econ_wealth_list">
+                            <option tal:repeat="econ_wealth econ_wealths" tal:attributes="value econ_wealth/0" tal:content="econ_wealth/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="conflict_level">Conflict level</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" data-selection-required="true" list="conflict_level_list" id="conflict_level" name="conflict_level" />
+                        <datalist id="conflict_level_list">
+                            <option tal:repeat="conflict_level conflict_levels" tal:attributes="value conflict_level/0" tal:content="conflict_level/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="no_planets">No. of planets</label></td>
+                    <td class="entry_content"><input type="text" id="no_planets" name="no_planets" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="no_moons">No. of moons</label></td>
+                    <td class="entry_content"><input type="text" id="no_moons" name="no_moons" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="special">Special</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" data-selection-required="true" list="special_list" id="special" name="special" />
+                        <datalist id="special_list">
+                            <option tal:repeat="special specials" tal:attributes="value special/0" tal:content="special/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="discovery_date">Date of Discovery</label></td>
+                    <td class="entry_content"><input type="date" id="discovery_date" name="discovery_date" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="discoverer">Discoverer</label></td>
+                    <td class="entry_content"><input type="text" id="discoverer" name="discoverer" value="bilwis" />
+                    </td>
+                </tr>
+
+                <input type="hidden" id="full_img" name="full_img" />
+                <input type="hidden" id="header_img" name="header_img" />
+                <input type="hidden" id="thumb_img" name="thumb_img" />
+                
+                <input  class="submit_button" id="submit_button"  type="submit" />
+            </form>
+
+            <tr>
+                <td class="entry_label">
+                    <label for="screenshot">Screenshot</label></td>
+                <td class="entry_content"><input type="file" id="screenshot" name="screenshot" accept="image/png, image/jpeg" />
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</body>
+
+</html>

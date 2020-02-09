@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		
+		body.mceContentBody { 
+		   background: tomato; 
+		   color:#000;
+		}
+
+	</style>
+	
+	<script
+		type="text/javascript"
+		src="../libs/tinymce/tinymce.min.js"
+		referrerpolicy="origin"
+		metal:define-macro="tinymce_load">
+	</script>
+
+	<script type="text/javascript" metal:define-macro="tinymce_setup">
+		tinymce.init({
+		selector: "#myTextarea",
+		skin: "oxide-dark",
+		width: "100%",
+		height: 400,
+		plugins: [
+		"advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+		"searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+		"table emoticons template paste help powerpaste"
+		],
+		toolbar: " undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify |" +
+		" bullist numlist outdent indent | link image | print preview media fullpage | " +
+		"forecolor backcolor emoticons | help",
+		menubar: "favs file edit view insert format tools table help",
+		content_css: "dark",
+		paste_data_images: true,
+		images_upload_url: "../entry/image_upload.php"
+		});
+	</script>	
+	
+
+</head>
+
+<body>
+	<div metal:define-macro="form" class="entry_form">
+		<form action="../entry/article_upload.php" method="post">
+			<label for="heading">Heading:</label>
+			<input type="text" id="heading" class="entry_heading" name="heading" placeholder="Headline"/>
+			<input type="hidden" id="source_table" name="source_table" tal:attributes="value source_table"/>
+			<input type="hidden" id="uuid" name="uuid" tal:attributes="value uuid"/>
+			<input type="hidden" id="author" name="author" value="bilwis"/>
+			<input type="hidden" id="return_type" name="return_type" tal:attributes="value return_type"/>
+			<textarea name="text" id="myTextarea"></textarea>
+			<table class="entry_button_table">
+			<td><button class="entry_clear_button" onclick="tinymce.activeEditor.setContent('');" type="button">Clear</button></td>
+			<td></td>
+			<td><button class="entry_submit_button" onclick="tinymce.activeEditor.uploadImages(function(success) { document.forms[0].submit();});" type="button">Submit</button></td>
+			</table>
+		</form>
+
+	</div>
+</body>
+</html>	

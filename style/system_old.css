@@ -1,0 +1,145 @@
+@charset "utf-8";
+/* CSS Document */
+
+@import url("../webfonts/GeoSans_Light_Regular/stylesheet.css");
+@import url("../webfonts/Portal_Glyphs_NMS/stylesheet.css");
+
+body {
+	background-color: #121619;
+	color: #FFFFFF;
+	font-size: 20px;
+	font-family: GeoSans Light Regular, Georgia;
+	letter-spacing: 0.6px;
+	
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
+.system_name {
+	color: tomato;
+	text-transform: uppercase;
+	text-align: center;
+	letter-spacing: 10px;
+	font-weight: bold;
+}
+
+.region_str {
+	text-align: center;
+}
+
+.disco_str {
+	text-align: center;
+}
+
+img {
+	border-radius: 0px;
+	border: 1px solid black;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 80%;
+	height: auto;
+}
+
+.info_table {
+	border: 1px solid black;
+	border-collapse: collapse;
+	margin-left: auto;
+	margin-right: auto;
+	width: 80%;
+	
+	
+}
+
+.info_table th,
+.info_table td {
+	width: auto;
+	border: 1px solid black;
+	text-align: center;
+}
+
+.info_table th {
+	background-color: #2F3A41;
+}
+
+.glyph {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 80%;
+	
+	box-sizing: border-box;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	
+	background-color: #2F3A41;
+	border: 1px solid black;
+	
+	text-align: center;
+	font-size: 50px;
+	font-family: "Portal Glyphs NMS";
+	letter-spacing: 25px;
+	text-shadow: 0 0 8px cyan;
+}
+
+.entry_form
+{
+	display: block;
+	max-width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 60px;
+}
+
+.diary_header
+{
+	text-align: center;
+}
+
+.article_header
+{
+	border: 1px solid black;
+	border-bottom: 0px;
+	
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 80%;
+	
+	/*margin: -10px 0 0 -20px;
+	margin: 0 0 0 -10px;
+	padding: 5 10 5 100;
+	width: calc(100% + 20px);*/
+	
+	box-sizing: border-box;
+	
+}
+
+.article_heading
+{
+	font-size: 24px;
+	text-align: center;
+	font-weight: 900;
+}
+
+.article_box {
+	
+}
+
+.article_content
+{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 60px;
+	max-width: 80%;
+	
+	box-sizing: border-box;
+	padding-left: 10px;
+	padding-right: 10px;
+	
+	background-color: #2F3A41;
+	border: 1px solid black;
+}

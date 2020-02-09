@@ -1,0 +1,106 @@
+@charset "utf-8";
+/* CSS Document */
+
+@import url("../webfonts/GeoSans_Light_Regular/stylesheet.css");
+@import url("../webfonts/Portal_Glyphs_NMS/stylesheet.css");
+@import url("stylesheet.css");
+@import url("colors.php");
+
+h1 {
+	text-align: center;
+}
+
+body {
+	background-color: var(--main-bg-color);
+	color: var(--main-text-color);
+	font-size: 18px;
+	font-family: GeoSans Light Regular, Georgia;
+	letter-spacing: 0.6px;
+	
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
+input[type='text'], input[type='date'], input[type='file'], select
+{
+	font-family: GeoSans Light Regular, Georgia;
+	letter-spacing: 0.6px;
+	font-size: 18px;
+	color: var(--header-text-color);
+	background-color: var(--header-highlight-color);
+	
+	border: 1px solid var(--border-color);
+	padding: 7px 10px;
+	
+	box-sizing: border-box;
+    overflow: hidden;
+	
+	width: 100%;
+}
+
+input[type='checkbox']
+{
+	height: 20px;
+	width: 20px;
+	color: var(--header-text-color);
+	background-color: var(--header-highlight-color);
+	border: 1px solid var(--border-color);
+}
+
+
+input[type='submit']
+{
+	font-family: GeoSans Light Regular, Georgia;
+	font-size: 20px;
+	letter-spacing: 0.6px;
+	color: var(--header-text-color);
+	background-color: var(--header-color);
+	border: 1px solid var(--border-color);
+	padding: 10px 20px;
+	margin: 5px 0px;
+	
+	float: right;
+}
+
+input[type='submit']:hover
+{
+	background-color: var(--header-highlight-color);
+}
+
+.submit_button
+{
+    visibility: hidden;
+}
+
+table {
+	border: 1px solid var(--border-color);
+	border-collapse: collapse;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	
+	background-color: var(--header-color);
+}
+
+td {
+	border: 1px solid var(--border-color);
+	padding: 5px 10px;
+}
+
+.container
+{
+	box-sizing: border-box;
+	max-width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.entry_label
+{
+	width: 33%;
+}
+
+.entry_content
+{
+	
+}

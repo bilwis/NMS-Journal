@@ -1,0 +1,21 @@
+{
+	"lifeforms" :
+	[
+		"Korvax", "Vy'keen", "Gek", "Empty", "Other"
+	],
+
+	"spectral_class":
+	[
+		"O", "B", "F", "G", "K", "M", "E"
+	],
+	
+	"spectral_oddities":
+	[
+		"e", "f", "h", "k", "m", "n", "p", "q", "s", "v", "w", ""
+	],
+	
+	"special":
+	[
+		"None", "Atlas Interface", "Black Hole", "Galaxy Centre"
+	]
+}
