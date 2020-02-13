@@ -15,35 +15,6 @@
 	font-weight: bold;
 }
 
-.context_str {
-	text-align: center;
-}
-
-.disco_str {
-	text-align: center;
-}
-
-.info_table {
-	border: 1px solid var(--border-color);
-	border-collapse: collapse;
-	margin-left: auto;
-	margin-right: auto;
-	width: 80%;
-	
-	
-}
-
-.info_table th,
-.info_table td {
-	width: auto;
-	border: 1px solid var(--border-color);
-	text-align: center;
-}
-
-.info_table th {
-	background-color: var(--header-color);
-}
-
 .glyph {
 	display: block;
 	margin-left: auto;
@@ -66,4 +37,6 @@
 	font-family: "Portal Glyphs NMS";
 	letter-spacing: 25px;
 	text-shadow: 0 0 8px cyan;
+    
+    word-break: break-all;
 }

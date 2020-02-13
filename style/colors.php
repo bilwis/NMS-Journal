@@ -19,6 +19,7 @@ header("Content-type: text/css");
 	--header-color: <?=$header_color?>;
 	--system-header-text-color: <?=$system_header_text_color?>;
 	--planet-header-text-color: <?=$planet_header_text_color?>;
+    --fauna-header-text-color: <?=$fauna_header_text_color?>;
 	--header-text-color: <?=$header_text_color?>;
 	--header-highlight-color: <?=$header_highlight_color?>;
 }

@@ -14,7 +14,7 @@ body {
     font-family: GeoSans Light Regular, Georgia;
     letter-spacing: 0.6px;
 
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
@@ -76,18 +76,88 @@ a:active {
     text-decoration: underline;
 }
 
-.page_header
-{
-    font-size: 50px;
-}
 
-.context_str
-{
+.context_str {
+    text-align: center;
     margin-top: 1rem;
 }
 
-.img_box
-{
+.disco_str {
+    text-align: center;
+}
+
+.info_table {
+    border: 1px solid var(--border-color);
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+.page_header {
+    font-size: 50px;
+}
+
+.info_table th,
+.info_table td {
+    width: auto;
+    border: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.info_table th {
+    background-color: var(--header-color);
+}
+
+@media screen and (max-width: 600px) {
+    .info_table {
+        border: 0;
+    }
+
+    .info_table caption {
+        font-size: 1.3em;
+    }
+
+    .info_table thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+    .info_table tr {
+        display: block;
+    }
+
+    .info_table td {
+        border: 0;
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: .8em;
+        text-align: right;
+    }
+
+    .info_table td::before {
+        /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .info_table td:last-child {
+        border-bottom: 0;
+    }
+}
+
+.img_box {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
@@ -115,7 +185,7 @@ a:active {
 
     background-color: var(--header-color);
     border: 1px solid var(--border-color);
-    
+
     font-size: 16px;
 }
 
@@ -147,8 +217,7 @@ a:active {
 }
 
 
-.card_table table
-{
+.card_table table {
     width: 100%;
     border-collapse: separate;
     background-color: var(--header-highlight-color);
@@ -179,8 +248,7 @@ a:active {
     -webkit-transform: rotate(-45deg);
 }
 
-.add_entry
-{
+.add_entry {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -197,7 +265,7 @@ a:active {
     appearance: button;
 
     text-decoration: none;
-    
+
     font-family: GeoSans Light Regular, Georgia;
     font-size: 20px;
     font-weight: 500;
@@ -302,10 +370,19 @@ label[for="heading"] {
     vertical-align: top;
 }
 
+@media screen and (max-width: 600px) {
+    .article_source {
+        font-size: 0.85em;
+        width: 45%;
+    }
+}
+
 .article_source a {
     color: inherit;
     font-weight: 700;
 }
+
+
 
 .article_source a:link {
     text-decoration: none;
@@ -328,7 +405,13 @@ label[for="heading"] {
     text-align: right;
     padding-right: 5%;
     vertical-align: top;
+}
 
+@media screen and (max-width: 600px) {
+    .article_timestamp {
+        font-size: 0.85em;
+        width: 45%;
+    }
 }
 
 .article_box {

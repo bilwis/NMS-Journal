@@ -1,77 +1,57 @@
 <?php
-	require_once('libs/autoload.php');
-	require_once('db.php');
-	
-
 	//--------------------
 	//Security Setup
 	//--------------------
 	
 	header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
-	session_start();
-	
-	if (isset($_SESSION['verified']))
-	{
-		if (!$_SESSION['verified']){
-			header("HTTP/1.1 403 Site access denied.");
-			exit();
-		} 
-	} else {
-		header("HTTP/1.1 403 Site access denied.");
-		exit();
-	}
 
+    if (!defined('SECURE_PAGE'))
+	{
+        header("HTTP/1.1 301 Moved permanently.");
+        header('Location: https://nms.bilwis.de/entry.php?type=fauna');
+
+	}
 	//--------------------
 	//Template Setup
 	//--------------------
 
-	$template = new PHPTAL('fauna_entry.html');
+	$template = new PHPTAL('templates/fauna_entry.html');
 	
 	//--------------------
 	//Load from DB
 	//--------------------
 	
-	//Get regions from db
-	$regions = array();
-
-	$result = $conn->query("SELECT id, name FROM nms_regions");
-
-	if ($result->num_rows > 0) {
-		$regions = $result->fetch_all();
-	}
-
-	//Get economy types from db
-	$econ_types = get_types($conn, "db_system_economy_type");
-	$econ_wealth = get_types($conn, "db_system_economy_wealth");
-	$conflict_levels = get_types($conn, "db_system_conflict");
-
 	//Get info from db
 	$planets = get_id_and_name($conn, $planets_table);
-	$biomes = get_id_and_name($conn, $biomes_table);
-	$weathers = get_id_and_name($conn, $weathers_table);
-	$life_levels = get_id_and_name($conn, $life_levels_table);
-	$sentinel_levels = get_id_and_name($conn, $sentinel_levels_table);
-	$resources = get_id_and_name($conn, $resources_table);
-
+	$genders = get_id_and_name($conn, $fauna_genders_table);
+	$behaviours = get_id_and_name($conn, $fauna_behaviours_table);
+	$ages = get_id_and_name($conn, $fauna_ages_table);
+	$diets = get_id_and_name($conn, $fauna_diets_table);
+	$baits = get_id_and_name($conn, $fauna_baits_table);
+	$ecosystems = get_id_and_name($conn, $fauna_ecosystems_table);
+	$activities = get_id_and_name($conn, $fauna_activities_table);
+	$notes = get_id_and_name($conn, $fauna_notes_table);
 	
-
+    //--------------------
+	//Put into template
 	//--------------------
-	//Load from JSON
-	//--------------------
 
-	$json = file_get_contents('./json/system_data.json');	
-	$system_data = json_decode($json, TRUE);
+	$template->planets = $planets;
+	$template->genders = $genders;
+	$template->behaviours = $behaviours;
+	$template->ages = $ages;
+	$template->diets = $diets;
+	$template->baits = $baits;
+	$template->ecosystems = $ecosystems;
+	$template->activities = $activities;
+	$template->notes = $notes;
 
-	$lifeforms = $system_data["lifeforms"];
-	$specials = $system_data["special"];
-
-	
-	$template->regions = $regions;
-	$template->lifeforms = $lifeforms;
-	$template->econ_types = $econ_types;
-	$template->econ_wealth = $econ_wealth;
-	$template->conflict_levels = $conflict_levels;
-	$template->specials = $specials;
+    if ($uuid)
+    {
+        $template->preselect_name = get_item_by_uuid($conn, $uuid, $planets_table);
+    } else {
+        $template->preselect_name = '';
+    }
 
 	try {
 		echo $template->execute();

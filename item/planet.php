@@ -19,7 +19,7 @@
 	//Options
 	//--------------------
 
-    $child_types_to_display = [];
+    $child_types_to_display = [$fauna_id_str,];
 	
 	//--------------------
 	//Get planet data
@@ -254,10 +254,9 @@
 		"Resources" => $resources_str,
 	];
 	
-	$template->info_table_header = array_keys($info_table);
 	$template->info_table = $info_table;
 
-    $template->child_cards = $child_cards;
+    $template->child_cards = '';//$child_cards;
 
 	$template->articles = $articles;
 

@@ -248,7 +248,6 @@
 		"Special" => $special,
 	];
 	
-	$template->info_table_header = array_keys($info_table);
 	$template->info_table = $info_table;
 
     $template->child_cards = $child_cards;

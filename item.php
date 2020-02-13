@@ -71,6 +71,10 @@
 			require_once('item/planet.php');
 			break;
             
+        case 'fauna':
+            require_once('item/fauna.php');
+            break;
+            
         default:
             header("HTTP/1.1 501 Not implemented.");
             echo('Error 501: Item output for type "' .$item_type. '" is not implemented.');

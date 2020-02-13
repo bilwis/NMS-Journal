@@ -10,16 +10,6 @@
     <script src="./libs/flexdatalist/jquery.flexdatalist.min.js"></script>
     <script src="./js/entry_image_resize.js"></script>
 
-    <style>
-        .glyph_code_entry {
-            font-family: "Portal Glyphs NMS" !important;
-            letter-spacing: 20px !important;
-            font-size: 40px !important;
-            text-align: center;
-            text-shadow: 0 0 8px cyan;
-        }
-
-    </style>
 </head>
 
 <body>
@@ -29,7 +19,7 @@
     <div class="container">
 
         <table>
-            <form enctype="multipart/form-data" method="post" action="fauna_upload.php">
+            <form enctype="multipart/form-data" method="post" action="../entry/fauna_upload.php">
                 <tr>
                     <td class="entry_label"><label for="orig_name">Original Name</label></td>
                     <td class="entry_content"><input type="text" id="orig_name" name="orig_name" /></td>
@@ -53,7 +43,7 @@
                 <tr>
                     <td class="entry_label">
                         <label for="gender">Gender</label></td>
-                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="gender_list" id="gender" name="gender" />
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="gender_list"  id="gender" name="gender" />
                         <datalist id="gender_list">
                             <option tal:repeat="gender genders" tal:attributes="value gender/0" tal:content="gender/1"></option>
                         </datalist>
@@ -103,20 +93,20 @@
                 <tr>
                     <td class="entry_label">
                         <label for="ecosystem">Ecosystem</label></td>
-                    <td class="entry_content">
-                        <select id="ecosystem" name="ecosystem">
-                            <option tal:repeat="text ecosystem" tal:attributes="value text" tal:content="text"></option>
-                        </select>
+                     <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="ecosystems_list" data-selection-required="true" id="ecosystem" name="ecosystem" />
+                        <datalist id="ecosystems_list">
+                            <option tal:repeat="ecosystem ecosystems" tal:attributes="value ecosystem/0" tal:content="ecosystem/1"></option>
+                        </datalist>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="entry_label">
                         <label for="activity">Activity</label></td>
-                    <td class="entry_content">
-                        <select id="activity" name="activity">
-                            <option tal:repeat="text activity" tal:attributes="value text" tal:content="text"></option>
-                        </select>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="activities_list" data-selection-required="true" id="activity" name="activity" />
+                        <datalist id="activities_list">
+                            <option tal:repeat="activity activities" tal:attributes="value activity/0" tal:content="activity/1"></option>
+                        </datalist>
                     </td>
                 </tr>
 
@@ -161,7 +151,7 @@
                 <input type="hidden" id="header_img" name="header_img" />
                 <input type="hidden" id="thumb_img" name="thumb_img" />
 
-                <input type="submit" />
+                <input  class="submit_button" id="submit_button"  type="submit" />
             </form>
             <!-- @TODO: Image resizing on client? -->
             <tr>

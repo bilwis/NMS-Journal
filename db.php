@@ -35,6 +35,15 @@ $conflict_levels_table = 'db_system_conflict';
 $lifeforms_table = 'db_system_lifeform';
 $system_specials_table = 'db_system_special';
 
+$fauna_activities_table = 'db_fauna_activity';
+$fauna_ages_table = 'db_fauna_age';
+$fauna_baits_table = 'db_fauna_bait';
+$fauna_behaviours_table = 'db_fauna_behaviour';
+$fauna_diets_table = 'db_fauna_diet';
+$fauna_ecosystems_table = 'db_fauna_ecosystem';
+$fauna_genders_table = 'db_fauna_gender';
+$fauna_notes_table = 'db_fauna_notes';
+
 //--------------------
 //Setting id_str vars
 //--------------------
@@ -65,6 +74,9 @@ function prepared_query($mysqli, $sql, $params, $types = "")
 	} catch (Exception $ex){
 		echo($ex);
 		echo($mysqli->error);
+        echo('<br><br>');
+        echo($params);
+        echo($sql);
 		die();
 	}
 }
@@ -160,6 +172,8 @@ function find_or_insert_item($mysqli, $name, $item_table)
 			//header("HTTP/1.1 500 Internal Server Error");
 			echo($ex);
 			echo($mysqli->error);
+            echo('<br><br>');
+            echo('Trying to fetch or insert "' . $name . '" with table "' . $item_table . '.');
 			die();
 		}
 	}	
@@ -283,6 +297,11 @@ function get_articles_from_childlist($mysqli, $child_list, $articles_table)
 				case $GLOBALS['planet_id_str']:
 					$bg_color = $GLOBALS['planet_color'];
 					$fg_color = $GLOBALS['planet_header_text_color'];
+					break;
+                    
+                case $GLOBALS['fauna_id_str']:
+					$bg_color = $GLOBALS['fauna_color'];
+					$fg_color = $GLOBALS['fauna_header_text_color'];
 					break;
 					
 			}

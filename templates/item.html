@@ -8,6 +8,8 @@
     <tal:block condition="verified" metal:use-macro="../templates/article_entry.html/tinymce_setup" />
     <link rel="stylesheet" type="text/css" tal:attributes="href item_stylesheet" />
     <link rel="stylesheet" type="text/css" href="../libs/slick/slick.css" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
 <body>
@@ -15,35 +17,24 @@
     <h3 class="context_str"><i><span tal:content="item_type">XXX</span> in the <a tal:content="context_name" tal:attributes="href context_url">XXX</a> <span tal:content="context_type">XXX</span>.</i></h3>
     <h5 class="disco_str">Discovered on <span tal:content="discovery_date">XX-XX-XXXX</span> by <span tal:content="discoverer">bilwis</span></h5>
 
-    <div class="img_box"><img class="cover_img" tal:attributes="src screenshot_path; alt item_name" src="https://nms.bilwis.de/pics/275850_20160828155312_1.png" width="1000px" alt="" /></div>
+    <div class="img_box"><img class="cover_img" tal:attributes="src screenshot_path; alt item_name" src="https://nms.bilwis.de/pics/275850_20160828155312_1.png" alt="" /></div>
 
-    <table class="info_table" width="1000">
+    <table class="info_table">
+        <thead>
+            <tr>
+                <th tal:repeat="table_item info_table" scope="col" tal:content="repeat/table_item/key">Header_Item</th>
+            </tr>
+        </thead>
         <tr>
-            <th tal:repeat="header_item info_table_header" scope="col" tal:content="header_item">Header_Item</th>
-        </tr>
-        <tr>
-            <td tal:content="table_item" tal:repeat="table_item info_table">Table_item</td>
+            <td tal:repeat="table_item info_table" tal:attributes="data-label repeat/table_item/key" tal:content="table_item">Table_item</td>
         </tr>
     </table>
 
     <p tal:condition="glyph_code" class="glyph" tal:content="glyph_code">2090026DD172</p>
 
 
+    <tal:block condition="child_cards" metal:use-macro="../templates/child_cards.html/child_cards" />
 
-    <h3 class="children_header" tal:condition="child_cards"><span tal:content="item_type">XXX</span> DISCOVERIES</h3>
-
-    <div class="children">
-        <div class="children_carousel">
-            <div class="child_card" tal:repeat="child_card child_cards">
-                <div class="card_header" tal:attributes="style child_card/header_style"><a tal:content="child_card/name" tal:attributes="href child_card/url">Item Name</a></div>
-                <div class="card_type"><i tal:content="child_card/type">Planet</i></div>
-                <div class="card_image"><img tal:attributes="src child_card/thumb" src="upload/screenshots/planets/1581154003_thumb.png" /></div>
-                <div class="card_content">
-                    <tal:block metal:use-macro="../templates/card_content.html/${child_card/type}" />
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div tal:condition="php: verified AND possible_entries" class="add_entry">
         <a class="add_entry_button" tal:repeat="possible_entry possible_entries" tal:attributes="href possible_entry/url">+ Add <span tal:content="possible_entry/type"></span></a>

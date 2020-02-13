@@ -9,7 +9,7 @@
 @import url("display_item.css");
 
 .page_header {
-	color: var(--system-color);
+	color: var(--fauna-color);
 	text-transform: uppercase;
 	text-align: center;
 	letter-spacing: 10px;
@@ -19,3 +19,4 @@
 .glyph {
 	display: none;
 }
+
