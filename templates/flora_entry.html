@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Flora Entry Form</title>
+
+    <link rel="stylesheet" type="text/css" href="style/entry.css" />
+    <script src="./libs/jquery-3.4.1.js"></script>
+    <link href="./libs/flexdatalist/jquery.flexdatalist.min.css" rel="stylesheet" type="text/css" />
+    <script src="./libs/flexdatalist/jquery.flexdatalist.min.js"></script>
+    <script src="./js/entry_image_resize.js"></script>
+
+</head>
+
+<body>
+
+    <h1>Flora Entry Form</h1>
+
+    <div class="container">
+
+        <table>
+            <form enctype="multipart/form-data" method="post" action="../entry/flora_upload.php">
+                <tr>
+                    <td class="entry_label"><label for="orig_name">Original Name</label></td>
+                    <td class="entry_content"><input type="text" id="orig_name" name="orig_name" /></td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="new_name">Name</label></td>
+                    <td class="entry_content"><input type="text" id="new_name" name="new_name" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="planet">Planet</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" data-selection-required="true" list="planet_list" id="planet" name="planet" tal:attributes="value preselect_name" />
+                        <datalist id="planet_list">
+                            <option tal:repeat="planet planets" tal:attributes="value planet/0" tal:content="planet/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="entry_label">
+                        <label for="gender">Age</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="age_list"  id="age" name="age" />
+                        <datalist id="age_list">
+                            <option tal:repeat="age ages" tal:attributes="value age/0" tal:content="age/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="entry_label">
+                        <label for="roots">Roots</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="roots_list" id="roots" name="roots" />
+                        <datalist id="roots_list">
+                            <option tal:repeat="root roots" tal:attributes="value root/0" tal:content="root/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="entry_label">
+                        <label for="food">Food</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="food_list" id="food" name="food" />
+                        <datalist id="food_list">
+                            <option tal:repeat="food foods" tal:attributes="value food/0" tal:content="food/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="entry_label">
+                        <label for="note">Notes</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="note_list" id="note" name="note" />
+                        <datalist id="note_list">
+                            <option tal:repeat="note notes" tal:attributes="value note/0" tal:content="note/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td class="entry_label">
+                        <label for="prim_resource">Primary Resource</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="resources_list" id="prim_resource" name="prim_resource" />
+                        <datalist id="resources_list">
+                            <option tal:repeat="resource resources" tal:attributes="value resource/0" tal:content="resource/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td class="entry_label">
+                        <label for="sec_resource">Secondary Resource</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="resources_list" id="sec_resource" name="sec_resource" />
+                        <datalist id="resources_list">
+                            <option tal:repeat="resource resources" tal:attributes="value resource/0" tal:content="resource/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+
+              
+                <tr>
+                    <td class="entry_label">
+                        <label for="discovery_date">Date of Discovery</label></td>
+                    <td class="entry_content"><input type="date" id="discovery_date" name="discovery_date" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="discoverer">Discoverer</label></td>
+                    <td class="entry_content"><input type="text" id="discoverer" name="discoverer" value="bilwis" />
+                    </td>
+                </tr>
+
+                <input type="hidden" id="full_img" name="full_img" />
+                <input type="hidden" id="header_img" name="header_img" />
+                <input type="hidden" id="thumb_img" name="thumb_img" />
+
+                <input  class="submit_button" id="submit_button"  type="submit" />
+            </form>
+            <!-- @TODO: Image resizing on client? -->
+            <tr>
+                <td class="entry_label">
+                    <label for="screenshot">Screenshot</label></td>
+                <td class="entry_content"><input type="file" id="screenshot" name="screenshot" accept="image/png, image/jpeg" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

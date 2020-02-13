@@ -75,6 +75,10 @@
             require_once('item/fauna.php');
             break;
             
+        case 'flora':
+            require_once('item/flora.php');
+            break;
+            
         default:
             header("HTTP/1.1 501 Not implemented.");
             echo('Error 501: Item output for type "' .$item_type. '" is not implemented.');

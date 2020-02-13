@@ -19,7 +19,7 @@
 	//Options
 	//--------------------
 
-    $child_types_to_display = [$fauna_id_str,];
+    $child_types_to_display = [$fauna_id_str, $flora_id_str,];
 	
 	//--------------------
 	//Get planet data
@@ -29,7 +29,7 @@
 	$sql = 'SELECT 
 	id, parent_id, name, biome, weather,
 	sentinel_level, flora_level, fauna_level, resources, 
-	discovery_date, discoverer, screenshot, glyph_code
+	discovery_date, discoverer, screenshot, glyph_code, moon
 	FROM ' . $planets_table . ' WHERE id = ?';
 	$params = [$uuid, ];
 
@@ -61,7 +61,8 @@
 					  $discovery_date,
 					  $discoverer,
 					  $screenshot,
-					  $glyph_code);
+					  $glyph_code,
+                      $moon);
 
 	$stmt->fetch();
 
@@ -143,48 +144,83 @@
             switch ($child['id_str'])
             {
 
-                    /*
-                //Child is a planet, fetch biome and resource information in addition
-                //to the discovery and discovery date 
-                case $planet_id_str:
+                //Child is a fauna item, fetch ecosystem, activity, diet
+                //+ discovery and discovery date 
+                case $fauna_id_str:
                     $sql = 'SELECT  
-                    biome, resources, discovery_date, discoverer, screenshot
-                    FROM ' . $planets_table . ' WHERE id = ?';
+                    ecosystem, activity, diet, discovery_date, discoverer, screenshot
+                    FROM ' . $fauna_table . ' WHERE id = ?';
                     $params = [$child['uuid'], ];
 
                     $stmt = prepared_query($conn, $sql, $params);
                     $stmt->store_result();
 
-                    $stmt->bind_result($child_biome_id,
-                                       $child_resource_ids_str,
+                    $stmt->bind_result($child_ecosystem_id,
+                                       $child_activity_id,
+                                       $child_diet_id,
                                        $child_discovery_date,
                                        $child_discoverer,
                                        $child_screenshot);
 
                     $stmt->fetch();
 
-                    //Add text for biome to card             
-                    $child_card['biome'] = get_item_by_uuid($conn, $child_biome_id, $biomes_table);
+                    //Add text for table items to card             
+                    $child_card['ecosystem'] = get_item_by_uuid($conn, $child_ecosystem_id, $fauna_ecosystems_table);
+                    $child_card['activity'] = get_item_by_uuid($conn, $child_activity_id, $fauna_activities_table);
+                    $child_card['diet'] = get_item_by_uuid($conn, $child_diet_id, $fauna_diets_table);
+                    
+                    //Add header style
+                    $child_card['header_style'] = 'background-color: ' . $fauna_color . '; color: ' . $fauna_header_text_color . ';';
 
-                    //Get text for resources
-                    $child_resource_ids = explode(',', $child_resource_ids_str);
-                    $child_resources = [];
+                    break;
+                    
+                //Child is a flora item, fetch ecosystem, activity, diet
+                //+ discovery and discovery date 
+                case $flora_id_str:
+                    $sql = 'SELECT  
+                    age, roots, food, primary_element, secondary_element, discovery_date, discoverer, screenshot
+                    FROM ' . $flora_table . ' WHERE id = ?';
+                    $params = [$child['uuid'], ];
 
-                    foreach($child_resource_ids as $child_resource_id)
+                    $stmt = prepared_query($conn, $sql, $params);
+                    $stmt->store_result();
+
+                    $stmt->bind_result($child_age_id,
+                                       $child_roots_id,
+                                       $child_food_id,
+                                       $child_prim_resource_id,
+                                       $child_sec_resource_id,
+                                       $child_discovery_date,
+                                       $child_discoverer,
+                                       $child_screenshot);
+
+                    $stmt->fetch();
+
+                    //Add text for table items to card             
+                    $child_card['age'] = get_item_by_uuid($conn, $child_age_id, $flora_ages_table);
+                    $child_card['roots'] = get_item_by_uuid($conn, $child_roots_id, $flora_roots_table);
+                    $child_card['food'] = get_item_by_uuid($conn, $child_food_id, $flora_food_table);
+                    $child_card['primary_resource'] = get_item_by_uuid($conn, $child_prim_resource_id, $resources_table);
+                    $child_card['secondary_resource'] = get_item_by_uuid($conn, $child_sec_resource_id, $resources_table);
+                    
+                    if ($child_card['primary_resource'] == '')
                     {
-                        $child_resources[] = get_item_by_uuid($conn, $child_resource_id, $resources_table);
+                        $child_card['primary_resource'] = ' - ';
                     }
 
-                    $child_card['header_style'] = 'background-color: ' . $planet_color . '; color: ' . $planet_header_text_color . ';';
-
-                    //Add resources to card
-                    $child_card['resources'] = implode(', ', $child_resources);
+                    if ($child_card['secondary_resource'] == '')
+                    {
+                        $child_card['secondary_resource'] = ' - ';
+                    }
                     
-                    break;*/
+                    //Add header style
+                    $child_card['header_style'] = 'background-color: ' . $flora_color . '; color: ' . $flora_header_text_color . ';';
+
+                    break;
             }
             
             //Add discovery info to card
-            $child_card['discovery_date'] = $child_discovery_date;
+            $child_card['discovery_date'] = strftime('%x', strtotime($child_discovery_date));
             $child_card['discoverer'] = $child_discoverer;
 
             //Get thumbnail
@@ -227,11 +263,11 @@
 	$template->source_table = $planets_table;
 	$template->return_type = 'planet';
 
-	$template->page_title = 'Planet - ' . $name;
+	$template->page_title = (($moon) ? 'Moon - ' : 'Planet - ') . $name;
 	$template->item_stylesheet = '../style/planet.css';
 
 	$template->item_name = $name;
-    $template->item_type = 'Planet';
+    $template->item_type = (($moon) ? 'Moon' : 'Planet');
 	$template->context_name = $system_name;
     $template->context_type = 'Star System';
     $template->context_url = '../item.php?uuid=' . $system_id . '&type=' . $system_id_str;
@@ -256,7 +292,7 @@
 	
 	$template->info_table = $info_table;
 
-    $template->child_cards = '';//$child_cards;
+    $template->child_cards = $child_cards;
 
 	$template->articles = $articles;
 

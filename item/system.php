@@ -140,7 +140,7 @@
                 //to the discovery and discovery date 
                 case $planet_id_str:
                     $sql = 'SELECT  
-                    biome, resources, discovery_date, discoverer, screenshot
+                    biome, resources, discovery_date, discoverer, screenshot, moon
                     FROM ' . $planets_table . ' WHERE id = ?';
                     $params = [$child['uuid'], ];
 
@@ -151,9 +151,15 @@
                                        $child_resource_ids_str,
                                        $child_discovery_date,
                                        $child_discoverer,
-                                       $child_screenshot);
+                                       $child_screenshot,
+                                       $child_moon);
 
                     $stmt->fetch();
+                    
+                    if ($child_moon)
+                    {
+                        $child_card['type'] = 'moon';
+                    }
 
                     //Add text for biome to card             
                     $child_card['biome'] = get_item_by_uuid($conn, $child_biome_id, $biomes_table);
@@ -176,7 +182,7 @@
             }
             
             //Add discovery info to card
-            $child_card['discovery_date'] = $child_discovery_date;
+            $child_card['discovery_date'] = strftime('%x', strtotime($child_discovery_date));
             $child_card['discoverer'] = $child_discoverer;
 
             //Get thumbnail

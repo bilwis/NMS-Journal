@@ -1,0 +1,22 @@
+@charset "utf-8";
+/* CSS Document */
+
+@import url("../webfonts/GeoSans_Light_Regular/stylesheet.css");
+@import url("../webfonts/Portal_Glyphs_NMS/stylesheet.css");
+
+@import url("stylesheet.css");
+@import url("colors.php");
+@import url("display_item.css");
+
+.page_header {
+	color: var(--flora-color);
+	text-transform: uppercase;
+	text-align: center;
+	letter-spacing: 10px;
+	font-weight: bold;
+}
+
+.glyph {
+	display: none;
+}
+

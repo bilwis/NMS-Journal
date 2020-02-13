@@ -187,6 +187,11 @@ a:active {
     border: 1px solid var(--border-color);
 
     font-size: 16px;
+    /*
+    width: 250px;
+    min-width: 250px;
+    max-width: 232px;*/
+    
 }
 
 .card_image img {
@@ -223,6 +228,17 @@ a:active {
     background-color: var(--header-highlight-color);
     border: 1px solid black;
     border-spacing: 5px 10px;
+    /*padding: 5px 0px;*/
+}
+
+.card_table th {
+    width: 40%;
+    /*text-align: left;*/
+    padding-left: 5px;
+}
+
+.card_table td {
+    padding-left: 5px;
 }
 
 

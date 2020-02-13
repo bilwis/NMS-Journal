@@ -37,7 +37,9 @@
 
 
     <div tal:condition="php: verified AND possible_entries" class="add_entry">
-        <a class="add_entry_button" tal:repeat="possible_entry possible_entries" tal:attributes="href possible_entry/url">+ Add <span tal:content="possible_entry/type"></span></a>
+        <table>
+        <td><a class="add_entry_button" tal:repeat="possible_entry possible_entries" tal:attributes="href possible_entry/url">+ Add <span tal:content="possible_entry/type"></span></a></td>
+        </table>
     </div>
 
     <div tal:condition="php: articles OR verified">

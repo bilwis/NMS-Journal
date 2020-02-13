@@ -27,18 +27,16 @@
 
 	$orig_name = $_POST['orig_name'];
 	$new_name = $_POST['new_name'];
-	$system = $_POST['system'];
-	$biome = $_POST['biome'];
-	$weather = $_POST['weather'];
-	$sentinel_level = $_POST['sentinel_level'];
-	$fauna_level = $_POST['fauna_level'];
-	$flora_level = $_POST['flora_level'];
-	$resources_string = $_POST['resources'];
-	$glyph_code = $_POST['glyph_code'];
+	$planet = $_POST['planet'];
+	$age = $_POST['age'];
+	$roots = $_POST['roots'];
+	$food = $_POST['food'];
+	$note = $_POST['note'];
+	$resource_primary = $_POST['prim_resource'];
+    $resource_secondary = $_POST['sec_resource'];
 	$discovery_date = $_POST['discovery_date'];
 	$discoverer = $_POST['discoverer'];
-	$moon = $_POST['moon'];
-    $screenshot = '';
+	$screenshot = '';
 	
 	//--------------------
 	//Handle POSTed images
@@ -51,7 +49,7 @@
     {
         try 
         {
-            $img_paths[$img_arr[0]] = handle_base64($img_arr[1], $img_arr[0], '../upload/screenshots/planets/');        
+            $img_paths[$img_arr[0]] = handle_base64($img_arr[1], $img_arr[0], '../upload/screenshots/flora/');        
         }
         catch (Exception $ex)
         {
@@ -62,20 +60,20 @@
     }
 
 	//--------------------
-	//Process system input
+	//Process planet input
 	//--------------------
 
 	//Check if input is valid UUID
-	if (Ramsey\Uuid\Uuid::isValid($system))
+	if (Ramsey\Uuid\Uuid::isValid($planet))
 	{
-		$system_uuid = $system;
+		$planet_uuid = $planet;
 	} else {
 		//Check if system exists
-		$system_uuid = get_item_by_name($conn, $system, $systems_table);
-		if ($system_uuid == NULL)
+		$planet_uuid = get_item_by_name($conn, $planet, $planets_table);
+		if ($planet_uuid == NULL)
 		{
 			header("HTTP/1.1 400 Malformed request.");
-			echo('System does not exist. Given system parameter: "' . $system .'".');
+			echo('System does not exist. Given system parameter: "' . $planet .'".');
 			return;
 		}
 	}
@@ -87,11 +85,10 @@
 	//Create array with references to the variables,
 	//to replace with existing or new id's for planet table entering
 	$check_array = [
-		[&$biome, $biomes_table],
-		[&$weather, $weathers_table],
-		[&$sentinel_level, $sentinel_levels_table],
-		[&$fauna_level, $life_levels_table],
-		[&$flora_level, $life_levels_table],
+		[&$age, $flora_ages_table],
+		[&$roots, $flora_roots_table],
+		[&$food, $flora_food_table],
+		[&$note, $flora_notes_table],
 	];
 	
 	//Loop through each paired item & item_table, looking up or inserting
@@ -101,34 +98,12 @@
 		$arr[0] = find_or_insert_item($conn, $arr[0], $arr[1]);
 	}
 
-    //Handle Checkbox input
-	if ($moon == 'on') { $moon_bool = '1'; }
-	if ($moon == NULL) { $moon_bool = '0'; }
-
 	//--------------------
 	//Process resource input
 	//--------------------
 
-	//Resource string is given as comma delimited list
-	$resources = explode(',', $resources_string);
-
-    $resources = array_unique($resources);
-
-	//Loop through each resource in the array, looking up or inserting
-	//the resource into the resource_table and changing the REFERENCED resource array entry to the id
-	foreach ($resources as &$resource)
-	{
-		$resource = find_or_insert_item($conn, $resource, $resources_table);
-	}
-
-	//Glue ids together with comma for sorage as string
-	$resources = implode(',', $resources);
-
-	//--------------------
-	//Process glyph code input
-	//--------------------
-
-	//TODO
+    $resource_primary_id = find_or_insert_item($conn, $resource_primary, $resources_table);
+    $resource_secondary_id = find_or_insert_item($conn, $resource_secondary, $resources_table);
 
 	//--------------------
 	//Enter into database
@@ -141,47 +116,43 @@
 
 	//Form Request
 	$params =   [ $uuid,
-				  $system_uuid,
+				  $planet_uuid,
 				  $orig_name,
 				  $new_name,
-				  $biome,
-				  $weather,
-				  $sentinel_level,
-				  $flora_level,
-				  $fauna_level,
-				  $resources,
+				  $age,
+				  $roots,
+				  $food,
+				  $note,
+				  $resource_primary_id,
+                  $resource_secondary_id,
 				  $discovery_date,
 				  $img_paths['header'],
 				  $discoverer,
-				  $glyph_code,
-                  $moon_bool,
 				  ];
 
-	$sql = 'INSERT INTO '.$planets_table.' (
+	$sql = 'INSERT INTO '.$flora_table.' (
 	id,
 	parent_id,
 	orig_name,
 	name,
-	biome,
-	weather,
-	sentinel_level,
-	flora_level,
-	fauna_level,
-	resources,
+	age,
+	roots,
+	food,
+	notes,
+	primary_element,
+	secondary_element,
 	discovery_date,
 	screenshot,
-	discoverer,
-	glyph_code,
-    moon
-	) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+	discoverer
+	) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)';
 
-	$types = 'sssssssssssssss';
+	$types = 'sssssssssssss';
 
 	try{
 		$stmt = prepared_query($conn, $sql, $params, $types);
 		$stmt->close();
 		header("HTTP/1.1 201 Created.");
-		header("Location: https://nms.bilwis.de/item.php?uuid=" . $uuid . '&type=planet',TRUE,303);
+		header("Location: https://nms.bilwis.de/item.php?uuid=" . $uuid . '&type=flora',TRUE,303);
 		
 	} catch (Exception $ex){
 		echo($ex);

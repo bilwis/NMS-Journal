@@ -7,6 +7,12 @@
 require_once('credentials.php');
 
 //--------------------
+//Set locale
+//--------------------
+
+setlocale(LC_ALL, Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+
+//--------------------
 //Setting table vars
 //--------------------
 
@@ -21,13 +27,14 @@ $bases_table = 'nms_bases';
 $ships_table = 'nms_ships';
 $tools_table = 'nms_tools';
 
+$resources_table = 'nms_resources';
+
 $articles_table = 'articles';
 
 $biomes_table = 'db_planet_biome';
 $weathers_table = 'db_planet_weather';
 $life_levels_table = 'db_planet_life';
 $sentinel_levels_table = 'db_planet_sentinels';
-$resources_table = 'db_planet_resources';
 
 $economy_type_table = 'db_system_economy_type';
 $economy_wealth_table = 'db_system_economy_wealth';
@@ -43,6 +50,11 @@ $fauna_diets_table = 'db_fauna_diet';
 $fauna_ecosystems_table = 'db_fauna_ecosystem';
 $fauna_genders_table = 'db_fauna_gender';
 $fauna_notes_table = 'db_fauna_notes';
+
+$flora_ages_table = 'db_flora_age';
+$flora_roots_table = 'db_flora_roots';
+$flora_food_table = 'db_flora_food';
+$flora_notes_table = 'db_flora_notes';
 
 //--------------------
 //Setting id_str vars
@@ -303,6 +315,11 @@ function get_articles_from_childlist($mysqli, $child_list, $articles_table)
 					$bg_color = $GLOBALS['fauna_color'];
 					$fg_color = $GLOBALS['fauna_header_text_color'];
 					break;
+                    
+                case $GLOBALS['flora_id_str']:
+					$bg_color = $GLOBALS['flora_color'];
+					$fg_color = $GLOBALS['flora_header_text_color'];
+					break;
 					
 			}
 
@@ -347,7 +364,9 @@ function get_articles_for_uuid($mysqli, $parent_uuid, $articles_table)
 	{
 		$article = [
 			'uuid' => $uuid,
-			'timestamp' => $timestamp,
+			//'timestamp_format' => date('d.m.Y', strtotime($timestamp)),
+            'timestamp_format' => strftime('%d. %B %Y', strtotime($timestamp)),
+            'timestamp' => $timestamp,
 			'author' => $author,
 			'heading' => $heading,
 			'content' => $content,

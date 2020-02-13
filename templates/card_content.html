@@ -22,6 +22,74 @@
             </tr>
         </table>
     </div>
+    <div metal:define-macro="moon" class="card_table">
+        <table>
+            <tr>
+                <th>Biome</th>
+                <td tal:content="child_card/biome">Temperate</td>
+            </tr>
+            <tr>
+                <th>Resources</th>
+                <td tal:content="child_card/resources">Copper, Indium, Ancient Bones</td>
+            </tr>
+            <tr>
+                <th>Discovery</th>
+                <td tal:content="child_card/discovery_date">2020-02-04</td>
+            </tr>
+            <tr>
+                <th>Discoverer</th>
+                <td tal:content="child_card/discoverer">bilwis</td>
+            </tr>
+        </table>
+    </div>
+    <div metal:define-macro="fauna" class="card_table">
+        <table>
+            <tr>
+                <th>Ecosystem</th>
+                <td tal:content="child_card/ecosystem"></td>
+            </tr>
+            <tr>
+                <th>Activity</th>
+                <td tal:content="child_card/activity"></td>
+            </tr>
+            <tr>
+                <th>Diet</th>
+                <td tal:content="child_card/diet"></td>
+            </tr>
+            <tr>
+                <th>Discovery</th>
+                <td tal:content="child_card/discovery_date">2020-02-04</td>
+            </tr>
+        </table>
+    </div>
+    <div metal:define-macro="flora" class="card_table">
+        <table>
+            <tr>
+                <th>Age</th>
+                <td tal:content="child_card/age"></td>
+            </tr>
+            <tr>
+                <th>Roots</th>
+                <td tal:content="child_card/roots"></td>
+            </tr>
+            <tr>
+                <th>Food</th>
+                <td tal:content="child_card/food"></td>
+            </tr>
+            <tr>
+                <th>Resource 1</th>
+                <td tal:content="child_card/primary_resource"></td>
+            </tr>
+            <tr>
+                <th>Resource 2</th>
+                <td tal:content="child_card/secondary_resource"></td>
+            </tr>
+            <tr>
+                <th>Discovery</th>
+                <td tal:content="child_card/discovery_date">2020-02-04</td>
+            </tr>
+        </table>
+    </div>
 </body>
 
 </html>

@@ -33,7 +33,7 @@
                 <tr>
                     <td class="entry_label">
                         <label for="planet">Planet</label></td>
-                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" data-selection-required="true" list="planet_list" id="planet" name="planet" />
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" data-selection-required="true" list="planet_list" id="planet" name="planet" tal:attributes="value preselect_name" />
                         <datalist id="planet_list">
                             <option tal:repeat="planet planets" tal:attributes="value planet/0" tal:content="planet/1"></option>
                         </datalist>
