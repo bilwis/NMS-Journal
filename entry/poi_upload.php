@@ -25,14 +25,14 @@
 	//Handle POST data
 	//--------------------
 
-	$name = $_POST['name'];
-	$system = $_POST['system'];
-    $inventory = $_POST['inventory'];
-	$type = $_POST['type'];
-    $price = $_POST['price'];
+	$orig_name = $_POST['orig_name'];
+	$new_name = $_POST['new_name'];
+	$planet = $_POST['planet'];
+	$poi_type = $_POST['poi_type'];
+	$planet_coords = $_POST['planet_coords'];
 	$discovery_date = $_POST['discovery_date'];
 	$discoverer = $_POST['discoverer'];
-    $screenshot = '';
+	$screenshot = '';
 	
 	//--------------------
 	//Handle POSTed images
@@ -45,7 +45,7 @@
     {
         try 
         {
-            $img_paths[$img_arr[0]] = handle_base64($img_arr[1], $img_arr[0], '../upload/screenshots/ships/');        
+            $img_paths[$img_arr[0]] = handle_base64($img_arr[1], $img_arr[0], '../upload/screenshots/pois/');        
         }
         catch (Exception $ex)
         {
@@ -56,41 +56,52 @@
     }
 
 	//--------------------
-	//Process system input
+	//Process planet input
 	//--------------------
 
 	//Check if input is valid UUID
-	if (Ramsey\Uuid\Uuid::isValid($system))
+	if (Ramsey\Uuid\Uuid::isValid($planet))
 	{
-		$system_uuid = $system;
+		$planet_uuid = $planet;
 	} else {
 		//Check if system exists
-		$system_uuid = get_item_by_name($conn, $system, $systems_table);
-		if ($system_uuid == NULL)
+		$planet_uuid = get_item_by_name($conn, $planet, $planets_table);
+		if ($planet_uuid == NULL)
 		{
 			header("HTTP/1.1 400 Malformed request.");
-			echo('System does not exist. Given system parameter: "' . $system .'".');
+			echo('System does not exist. Given system parameter: "' . $planet .'".');
 			return;
 		}
 	}
 
-    //--------------------
-	//Process datalist input
+	//--------------------
+	//Process type input
 	//--------------------
 
 	//Create array with references to the variables,
-	//to replace with existing or new id's for ship table entering
+	//to replace with existing or new id's for planet table entering
 	$check_array = [
-		[&$type, $ship_types_table],
+		[&$poi_type, $poi_types_table],
 	];
 	
 	//Loop through each paired item & item_table, looking up or inserting
 	//the item into the item_table and changing the REFERENCED item variable to the id
 	foreach ($check_array as $arr)
 	{
-		$arr[0] = get_item_by_name($conn, $arr[0], $arr[1]);
+		$arr[0] = find_or_insert_item($conn, $arr[0], $arr[1]);
 	}
 
+    //--------------------
+	//Process coordinate input
+	//--------------------
+
+    $lat = 0.0;
+    $long = 0.0;
+
+    $coords = explode(',', $planet_coords);
+
+    $lat = floatval($coords[0]);
+    $long = floatval($coords[1]);
 
 	//--------------------
 	//Enter into database
@@ -103,35 +114,37 @@
 
 	//Form Request
 	$params =   [ $uuid,
-				  $system_uuid,
-				  $name,
-                  $inventory,
-				  $type,
-                  $price,
+				  $planet_uuid,
+				  $orig_name,
+				  $new_name,
+				  $lat,
+                  $long,
+				  $poi_type,
 				  $discovery_date,
 				  $img_paths['header'],
 				  $discoverer,
 				  ];
 
-	$sql = 'INSERT INTO '.$ships_table.' (
+	$sql = 'INSERT INTO '.$pois_table.' (
 	id,
 	parent_id,
+	orig_name,
 	name,
-	inventory,
+	planet_lat,
+    planet_long,
 	type,
-    price,
 	discovery_date,
 	screenshot,
 	discoverer
-	) VALUES (?,?,?,?,?,?,?,?,?)';
+	) VALUES (?,?,?,?,?,?,?,?,?,?)';
 
-	$types = 'sssssisss';
+	$types = 'ssssddssss';
 
 	try{
 		$stmt = prepared_query($conn, $sql, $params, $types);
 		$stmt->close();
 		header("HTTP/1.1 201 Created.");
-		header("Location: https://nms.bilwis.de/item.php?uuid=" . $uuid . '&type=ship',TRUE,303);
+		header("Location: https://nms.bilwis.de/item.php?uuid=" . $uuid . '&type=poi',TRUE,303);
 		
 	} catch (Exception $ex){
 		echo($ex);

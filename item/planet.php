@@ -19,7 +19,7 @@
 	//Options
 	//--------------------
 
-    $child_types_to_display = [$fauna_id_str, $flora_id_str,];
+    $child_types_to_display = [$fauna_id_str, $flora_id_str, $poi_id_str];
 	
 	//--------------------
 	//Get planet data
@@ -217,6 +217,38 @@
                     $child_card['header_style'] = 'background-color: ' . $flora_color . '; color: ' . $flora_header_text_color . ';';
 
                     break;
+                    
+                //Child is a PoI, fetch type, long + lat
+                //+ discovery and discovery date 
+                case $poi_id_str:
+                    $sql = 'SELECT  
+                    type, planet_lat, planet_long, discovery_date, discoverer, screenshot
+                    FROM ' . $pois_table . ' WHERE id = ?';
+                    $params = [$child['uuid'], ];
+
+                    $stmt = prepared_query($conn, $sql, $params);
+                    $stmt->store_result();
+
+                    $stmt->bind_result($child_type_id,
+                                       $child_lat,
+                                       $child_long,
+                                       $child_discovery_date,
+                                       $child_discoverer,
+                                       $child_screenshot);
+
+                    $stmt->fetch();
+
+                    //Add text for table items to card             
+                    $child_card['poi_type'] = get_item_by_uuid($conn, $child_type_id, $poi_types_table);
+                    $child_card['lat'] = $child_lat;
+                    $child_card['long'] = $child_long;
+                    
+                    $child_card['type'] = 'PoI';
+                    
+                    //Add header style
+                    $child_card['header_style'] = 'background-color: ' . $poi_color . '; color: ' . $poi_header_text_color . ';';
+
+                    break;
             }
             
             //Add discovery info to card
@@ -243,6 +275,7 @@
         ['type' => 'Fauna', 'url' => '../entry.php?type=fauna' . $uuid_get,],
         ['type' => 'Flora', 'url' => '../entry.php?type=flora'. $uuid_get ,],
         ['type' => 'Base', 'url' => '../entry.php?type=base' . $uuid_get,],    
+        ['type' => 'PoI', 'url' => '../entry.php?type=poi' . $uuid_get,],   
     ];
 
 	//--------------------

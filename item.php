@@ -82,6 +82,10 @@
         case 'ship':
             require_once('item/ship.php');
             break;
+        
+        case 'poi':
+            require_once('item/poi.php');
+            break;
             
         default:
             header("HTTP/1.1 501 Not implemented.");

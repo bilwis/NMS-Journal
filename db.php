@@ -71,6 +71,7 @@ $planet_id_str = 'planet';
 $fauna_id_str = 'fauna';
 $flora_id_str = 'flora';
 $base_id_str = 'base';
+$poi_id_str = 'poi';
 $ship_id_str = 'ship';
 $tool_id_str = 'tool';
 
@@ -231,6 +232,7 @@ function get_system_children($mysqli, $system_id)
 function get_planet_children($mysqli, $planet_id)
 {
 	$children_arr = [
+        ['table' => $GLOBALS['pois_table'], 'id_str' => $GLOBALS['poi_id_str']],
 		['table' => $GLOBALS['bases_table'], 'id_str' => $GLOBALS['base_id_str']],
 		['table' => $GLOBALS['fauna_table'], 'id_str' => $GLOBALS['fauna_id_str']],
 		['table' => $GLOBALS['flora_table'], 'id_str' => $GLOBALS['flora_id_str']],
@@ -329,6 +331,11 @@ function get_articles_from_childlist($mysqli, $child_list, $articles_table)
                 case $GLOBALS['ship_id_str']:
 					$bg_color = $GLOBALS['ship_color'];
 					$fg_color = $GLOBALS['ship_header_text_color'];
+					break;
+                    
+                case $GLOBALS['poi_id_str']:
+					$bg_color = $GLOBALS['poi_color'];
+					$fg_color = $GLOBALS['poi_header_text_color'];
 					break;
 					
 			}

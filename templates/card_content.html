@@ -110,6 +110,26 @@
             </tr>
         </table>
     </div>
+    <div metal:define-macro="poi" class="card_table">
+        <table>
+            <tr>
+                <th>Type</th>
+                <td tal:content="child_card/poi_type"></td>
+            </tr>
+            <tr>
+                <th>Latitude</th>
+                <td tal:content="child_card/lat"></td>
+            </tr>
+            <tr>
+                <th>Longitude</th>
+                <td tal:content="child_card/long"></td>
+            </tr>
+            <tr>
+                <th>Discovery</th>
+                <td tal:content="child_card/discovery_date">2020-02-04</td>
+            </tr>
+        </table>
+    </div>
 </body>
 
 </html>
