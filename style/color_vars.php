@@ -39,6 +39,7 @@ $planet_header_text_color = 'black';
 $fauna_header_text_color = 'black';
 $flora_header_text_color = 'black';
 $ship_header_text_color = 'black';
+$base_header_text_color = 'black';
 $poi_header_text_color = 'black';
 
 $border_color = 'black';

@@ -80,6 +80,10 @@
             require_once('entry/poi_entry.php');
 			break;
             
+        case 'base':
+            require_once('entry/base_entry.php');
+			break;
+            
         default:
             header("HTTP/1.1 501 Not implemented.");
             echo('Error 501: Entry for type "' .$item_type. '" is not implemented.');

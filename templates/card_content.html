@@ -113,9 +113,25 @@
     <div metal:define-macro="poi" class="card_table">
         <table>
             <tr>
+                <th>Latitude</th>
+                <td tal:content="child_card/lat"></td>
+            </tr>
+            <tr>
+                <th>Longitude</th>
+                <td tal:content="child_card/long"></td>
+            </tr>
+            <tr>
                 <th>Type</th>
                 <td tal:content="child_card/poi_type"></td>
             </tr>
+            <tr>
+                <th>Discovery</th>
+                <td tal:content="child_card/discovery_date">2020-02-04</td>
+            </tr>
+        </table>
+    </div>
+    <div metal:define-macro="base" class="card_table">
+        <table>
             <tr>
                 <th>Latitude</th>
                 <td tal:content="child_card/lat"></td>
@@ -125,7 +141,11 @@
                 <td tal:content="child_card/long"></td>
             </tr>
             <tr>
-                <th>Discovery</th>
+                <th>Facilities</th>
+                <td tal:content="child_card/facilities"></td>
+            </tr>
+            <tr>
+                <th>Foundation</th>
                 <td tal:content="child_card/discovery_date">2020-02-04</td>
             </tr>
         </table>

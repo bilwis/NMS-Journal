@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Base Entry Form</title>
+
+    <link rel="stylesheet" type="text/css" href="style/entry.css" />
+    <script src="./libs/jquery-3.4.1.js"></script>
+    <link href="./libs/flexdatalist/jquery.flexdatalist.min.css" rel="stylesheet" type="text/css" />
+    <script src="./libs/flexdatalist/jquery.flexdatalist.min.js"></script>
+    <script src="./js/entry_image_resize.js"></script>
+
+</head>
+
+<body>
+
+    <h1>Base Entry Form</h1>
+
+    <div class="container">
+
+        <table>
+            <form enctype="multipart/form-data" method="post" action="../entry/base_upload.php">
+                <tr>
+                    <td class="entry_label"><label for="orig_name">Original Name</label></td>
+                    <td class="entry_content"><input type="text" id="orig_name" name="orig_name" /></td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="new_name">Name</label></td>
+                    <td class="entry_content"><input type="text" id="new_name" name="new_name" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="planet">Planet</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" data-selection-required="true" list="planet_list" id="planet" name="planet" tal:attributes="value preselect_name" />
+                        <datalist id="planet_list">
+                            <option tal:repeat="planet planets" tal:attributes="value planet/0" tal:content="planet/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="entry_label">
+                        <label for="planet_coords">Planetary Coords.</label></td>
+                    <td class="entry_content"><input type="text" id="planet_coords" name="planet_coords" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="entry_label">
+                        <label for="facilities">Facilities</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" list="facilities_list"  id="facilities" multiple="multiple" name="facilities" />
+                        <datalist id="facilities_list">
+                            <option tal:repeat="facility facilities" tal:attributes="value facility/0" tal:content="facility/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td class="entry_label">
+                        <label for="discovery_date">Date of Discovery</label></td>
+                    <td class="entry_content"><input type="date" id="discovery_date" name="discovery_date" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="discoverer">Discoverer</label></td>
+                    <td class="entry_content"><input type="text" id="discoverer" name="discoverer" value="bilwis" />
+                    </td>
+                </tr>
+
+                <input type="hidden" id="full_img" name="full_img" />
+                <input type="hidden" id="header_img" name="header_img" />
+                <input type="hidden" id="thumb_img" name="thumb_img" />
+
+                <input  class="submit_button" id="submit_button"  type="submit" />
+            </form>
+            <!-- @TODO: Image resizing on client? -->
+            <tr>
+                <td class="entry_label">
+                    <label for="screenshot">Screenshot</label></td>
+                <td class="entry_content"><input type="file" id="screenshot" name="screenshot" accept="image/png, image/jpeg" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

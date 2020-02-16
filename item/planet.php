@@ -19,7 +19,7 @@
 	//Options
 	//--------------------
 
-    $child_types_to_display = [$fauna_id_str, $flora_id_str, $poi_id_str];
+    $child_types_to_display = [$fauna_id_str, $flora_id_str, $poi_id_str, $base_id_str,];
 	
 	//--------------------
 	//Get planet data
@@ -247,6 +247,47 @@
                     
                     //Add header style
                     $child_card['header_style'] = 'background-color: ' . $poi_color . '; color: ' . $poi_header_text_color . ';';
+
+                    break;
+                    
+                //Child is a Base, fetch facilities, long + lat
+                //+ discovery and discovery date    
+                case $base_id_str:
+                    $sql = 'SELECT  
+                    facilities, planet_lat, planet_long, discovery_date, discoverer, screenshot
+                    FROM ' . $bases_table . ' WHERE id = ?';
+                    $params = [$child['uuid'], ];
+
+                    $stmt = prepared_query($conn, $sql, $params);
+                    $stmt->store_result();
+
+                    $stmt->bind_result($child_facilities_ids_str,
+                                       $child_lat,
+                                       $child_long,
+                                       $child_discovery_date,
+                                       $child_discoverer,
+                                       $child_screenshot);
+
+                    $stmt->fetch();
+
+                    //Add text for table items to card             
+                    $child_card['lat'] = $child_lat;
+                    $child_card['long'] = $child_long;
+                    
+                    //Get text for resources
+                    $child_facilities_ids = explode(',', $child_facilities_ids_str);
+                    $child_facilities = [];
+
+                    foreach($child_facilities_ids as $child_facilities_id)
+                    {
+                        $child_facilities[] = get_item_by_uuid($conn, $child_facilities_id, $base_facilities_table);
+                    }
+                    
+                    //Add resources to card
+                    $child_card['facilities'] = implode(', ', $child_facilities);
+                    
+                    //Add header style
+                    $child_card['header_style'] = 'background-color: ' . $base_color . '; color: ' . $base_header_text_color . ';';
 
                     break;
             }

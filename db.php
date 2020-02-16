@@ -61,6 +61,8 @@ $ship_types_table = 'db_ship_types';
 
 $poi_types_table = 'db_poi_types';
 
+$base_facilities_table = 'db_base_facilities';
+
 //--------------------
 //Setting id_str vars
 //--------------------
@@ -336,6 +338,11 @@ function get_articles_from_childlist($mysqli, $child_list, $articles_table)
                 case $GLOBALS['poi_id_str']:
 					$bg_color = $GLOBALS['poi_color'];
 					$fg_color = $GLOBALS['poi_header_text_color'];
+					break;
+                    
+                case $GLOBALS['base_id_str']:
+					$bg_color = $GLOBALS['base_color'];
+					$fg_color = $GLOBALS['base_header_text_color'];
 					break;
 					
 			}

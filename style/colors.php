@@ -24,6 +24,7 @@ header("Content-type: text/css");
     --flora-header-text-color: <?=$flora_header_text_color?>;
     --ship-header-text-color: <?=$ship_header_text_color?>;
     --poi-header-text-color: <?=$poi_header_text_color?>;
+    --base-header-text-color: <?=$base_header_text_color?>;
 	--header-text-color: <?=$header_text_color?>;
 	--header-highlight-color: <?=$header_highlight_color?>;
 }
