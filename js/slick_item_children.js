@@ -3,7 +3,7 @@
          infinite: false,
          slidesToShow: 3,
          slidesToScroll: 1,
-         speed: 0,
+         speed: 100,
          prevArrow: '<button class="slide-arrow prev-arrow"></button>',
          nextArrow: '<button class="slide-arrow next-arrow"></button>',
          variableWidth: false,

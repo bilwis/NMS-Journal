@@ -72,6 +72,10 @@
             require_once('entry/flora_entry.php');
 			break;
             
+        case 'ship':
+            require_once('entry/ship_entry.php');
+			break;
+            
         default:
             header("HTTP/1.1 501 Not implemented.");
             echo('Error 501: Entry for type "' .$item_type. '" is not implemented.');

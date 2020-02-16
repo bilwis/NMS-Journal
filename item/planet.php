@@ -268,6 +268,7 @@
 
 	$template->item_name = $name;
     $template->item_type = (($moon) ? 'Moon' : 'Planet');
+    $template->item_in_on = 'in';
 	$template->context_name = $system_name;
     $template->context_type = 'Star System';
     $template->context_url = '../item.php?uuid=' . $system_id . '&type=' . $system_id_str;

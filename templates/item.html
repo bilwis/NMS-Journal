@@ -14,7 +14,7 @@
 
 <body>
     <h1 class="page_header" tal:content="item_name">Planet name</h1>
-    <h3 class="context_str"><i><span tal:content="item_type">XXX</span> in the <a tal:content="context_name" tal:attributes="href context_url">XXX</a> <span tal:content="context_type">XXX</span>.</i></h3>
+    <h3 class="context_str"><i><span tal:content="item_type">XXX</span> <span tal:content="item_in_on">in/on</span> the <a tal:content="context_name" tal:attributes="href context_url">XXX</a> <span tal:content="context_type">XXX</span>.</i></h3>
     <h5 class="disco_str">Discovered on <span tal:content="discovery_date">XX-XX-XXXX</span> by <span tal:content="discoverer">bilwis</span></h5>
 
     <div class="img_box"><img class="cover_img" tal:attributes="src screenshot_path; alt item_name" src="https://nms.bilwis.de/pics/275850_20160828155312_1.png" alt="" /></div>

@@ -144,6 +144,7 @@
 
 	$template->item_name = $name;
     $template->item_type = 'Flora';
+    $template->item_in_on = 'on';
 	$template->context_name = $planet_name;
     $template->context_type = 'Planet';
     $template->context_url = '../item.php?uuid=' . $planet_id . '&type=' . $planet_id_str;

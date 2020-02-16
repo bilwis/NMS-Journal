@@ -15,12 +15,14 @@ header("Content-type: text/css");
 	--base-color: <?=$base_color?>;
 	--fauna-color: <?=$fauna_color?>;
 	--flora-color: <?=$flora_color?>;
+    --poi-color: <?=$poi_color?>;
 	--border-color: <?=$border_color?>;
 	--header-color: <?=$header_color?>;
 	--system-header-text-color: <?=$system_header_text_color?>;
 	--planet-header-text-color: <?=$planet_header_text_color?>;
     --fauna-header-text-color: <?=$fauna_header_text_color?>;
     --flora-header-text-color: <?=$flora_header_text_color?>;
+    --ship-header-text-color: <?=$ship_header_text_color?>;
 	--header-text-color: <?=$header_text_color?>;
 	--header-highlight-color: <?=$header_highlight_color?>;
 }

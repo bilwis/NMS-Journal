@@ -23,6 +23,7 @@ $planets_table = 'nms_planets';
 $fauna_table = 'nms_fauna';
 $flora_table = 'nms_flora';
 $bases_table = 'nms_bases';
+$pois_table = 'nms_pois';
 
 $ships_table = 'nms_ships';
 $tools_table = 'nms_tools';
@@ -55,6 +56,10 @@ $flora_ages_table = 'db_flora_age';
 $flora_roots_table = 'db_flora_roots';
 $flora_food_table = 'db_flora_food';
 $flora_notes_table = 'db_flora_notes';
+
+$ship_types_table = 'db_ship_types';
+
+$poi_types_table = 'db_poi_types';
 
 //--------------------
 //Setting id_str vars
@@ -320,6 +325,11 @@ function get_articles_from_childlist($mysqli, $child_list, $articles_table)
 					$bg_color = $GLOBALS['flora_color'];
 					$fg_color = $GLOBALS['flora_header_text_color'];
 					break;
+                    
+                case $GLOBALS['ship_id_str']:
+					$bg_color = $GLOBALS['ship_color'];
+					$fg_color = $GLOBALS['ship_header_text_color'];
+					break;
 					
 			}
 
@@ -392,5 +402,33 @@ function get_id_and_name($mysqli, $table_name)
 
 }
 
+function star_to_portal($star_coords_str)
+{
+    $star_coords = str_replace(':', '', $star_coords_str);
+    $x = hexdec(substr($star_coords, 0, 4));
+    $y = hexdec(substr($star_coords, 4, 4));
+    $z = hexdec(substr($star_coords, 8, 4));
+    $ssi = hexdec(substr($star_coords, 13, 3));
+    $portal_number = dechex(0);
+
+    $x = $x + hexdec('801');
+    $y = $y + hexdec('81');
+    $z = $z + hexdec('801');
+    
+    $x = $x % hexdec('1000');
+    $y = $y % hexdec('100');
+    $z = $z % hexdec('1000');
+    
+    $portal_coord = $portal_number . str_pad(dechex($ssi), 3, '0', STR_PAD_LEFT) . str_pad(dechex($y), 2, '0', STR_PAD_LEFT) .  str_pad(dechex($z), 3, '0', STR_PAD_LEFT) . str_pad(dechex($x), 3, '0', STR_PAD_LEFT);
+    
+    return strtoupper($portal_coord);
+}
+
+function number_format_locale($number,$decimals=2) {
+    $locale = localeconv();
+    return number_format($number,$decimals,
+               $locale['decimal_point'],
+               $locale['thousands_sep']);
+ }
 
 ?>

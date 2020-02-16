@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Ship Entry Form</title>
+
+    <link rel="stylesheet" type="text/css" href="../style/entry.css" />
+    <script src="../libs/jquery-3.4.1.js"></script>
+    <link href="../libs/flexdatalist/jquery.flexdatalist.min.css" rel="stylesheet" type="text/css" />
+    <script src="../libs/flexdatalist/jquery.flexdatalist.min.js"></script>
+    <script src="../js/entry_image_resize.js"></script>
+
+</head>
+
+<body>
+
+    <h1>Ship Entry Form</h1>
+
+    <div class="container">
+
+        <table>
+            <form enctype="multipart/form-data" method="post" action="../entry/ship_upload.php">
+                <tr>
+                    <td class="entry_label"><label for="name">Name</label></td>
+                    <td class="entry_content"><input type="text" id="name" name="name" /></td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="system">System</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" data-selection-required="true" list="system_list" id="system" name="system" tal:attributes="value preselect_name" />
+                        <datalist id="system_list">
+                            <option tal:repeat="system systems" tal:attributes="value system/0" tal:content="system/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="type">Type</label></td>
+                    <td class="entry_content"><input type="text" class="flexdatalist" data-min-length="0" data-selection-required="true" list="type_list" id="type" name="type" />
+                        <datalist id="type_list">
+                            <option tal:repeat="type types" tal:attributes="value type/0" tal:content="type/1"></option>
+                        </datalist>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="entry_label"><label for="inventory">Inventory</label></td>
+                    <td class="entry_content"><input type="text" id="inventory" name="inventory" /></td>
+                </tr>
+                
+                <tr>
+                    <td class="entry_label"><label for="price">Price</label></td>
+                    <td class="entry_content"><input type="text" id="price" name="price" /></td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="discovery_date">Date of Discovery</label></td>
+                    <td class="entry_content"><input type="date" id="discovery_date" name="discovery_date" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="entry_label">
+                        <label for="discoverer">Discoverer</label></td>
+                    <td class="entry_content"><input type="text" id="discoverer" name="discoverer" value="bilwis" />
+                    </td>
+                </tr>
+
+                <input type="hidden" id="full_img" name="full_img" />
+                <input type="hidden" id="header_img" name="header_img" />
+                <input type="hidden" id="thumb_img" name="thumb_img" />
+
+                <input  class="submit_button" id="submit_button"  type="submit" />
+            </form>
+            <tr>
+                <td class="entry_label">
+                    <label for="screenshot">Screenshot</label></td>
+                <td class="entry_content"><input type="file" id="screenshot" name="screenshot" accept="image/png, image/jpeg" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

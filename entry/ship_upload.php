@@ -25,19 +25,13 @@
 	//Handle POST data
 	//--------------------
 
-	$orig_name = $_POST['orig_name'];
-	$new_name = $_POST['new_name'];
+	$name = $_POST['name'];
 	$system = $_POST['system'];
-	$biome = $_POST['biome'];
-	$weather = $_POST['weather'];
-	$sentinel_level = $_POST['sentinel_level'];
-	$fauna_level = $_POST['fauna_level'];
-	$flora_level = $_POST['flora_level'];
-	$resources_string = $_POST['resources'];
-	$gal_coords = $_POST['gal_coords'];
+    $inventory = $_POST['inventory'];
+	$type = $_POST['type'];
+    $price = $_POST['price'];
 	$discovery_date = $_POST['discovery_date'];
 	$discoverer = $_POST['discoverer'];
-	$moon = $_POST['moon'];
     $screenshot = '';
 	
 	//--------------------
@@ -80,55 +74,23 @@
 		}
 	}
 
-	//--------------------
-	//Process biome/weather/levels input
+    //--------------------
+	//Process datalist input
 	//--------------------
 
 	//Create array with references to the variables,
-	//to replace with existing or new id's for planet table entering
+	//to replace with existing or new id's for ship table entering
 	$check_array = [
-		[&$biome, $biomes_table],
-		[&$weather, $weathers_table],
-		[&$sentinel_level, $sentinel_levels_table],
-		[&$fauna_level, $life_levels_table],
-		[&$flora_level, $life_levels_table],
+		[&$type, $ship_types_table],
 	];
 	
 	//Loop through each paired item & item_table, looking up or inserting
 	//the item into the item_table and changing the REFERENCED item variable to the id
 	foreach ($check_array as $arr)
 	{
-		$arr[0] = find_or_insert_item($conn, $arr[0], $arr[1]);
+		$arr[0] = get_item_by_name($conn, $arr[0], $arr[1]);
 	}
 
-    //Handle Checkbox input
-	if ($moon == 'on') { $moon_bool = '1'; }
-	if ($moon == NULL) { $moon_bool = '0'; }
-
-	//--------------------
-	//Process resource input
-	//--------------------
-
-	//Resource string is given as comma delimited list
-	$resources = explode(',', $resources_string);
-
-    $resources = array_unique($resources);
-
-	//Loop through each resource in the array, looking up or inserting
-	//the resource into the resource_table and changing the REFERENCED resource array entry to the id
-	foreach ($resources as &$resource)
-	{
-		$resource = find_or_insert_item($conn, $resource, $resources_table);
-	}
-
-	//Glue ids together with comma for sorage as string
-	$resources = implode(',', $resources);
-
-	//--------------------
-	//Process glyph code input
-	//--------------------
-
-	$glyph_code = star_to_portal($gal_coords);
 
 	//--------------------
 	//Enter into database
@@ -142,48 +104,34 @@
 	//Form Request
 	$params =   [ $uuid,
 				  $system_uuid,
-				  $orig_name,
-				  $new_name,
-				  $biome,
-				  $weather,
-				  $sentinel_level,
-				  $flora_level,
-				  $fauna_level,
-				  $resources,
+				  $name,
+                  $inventory,
+				  $type,
+                  $price,
 				  $discovery_date,
 				  $img_paths['header'],
 				  $discoverer,
-				  $glyph_code,
-                  $moon_bool,
-                  $gal_coords,
 				  ];
 
-	$sql = 'INSERT INTO '.$planets_table.' (
+	$sql = 'INSERT INTO '.$ships_table.' (
 	id,
 	parent_id,
-	orig_name,
 	name,
-	biome,
-	weather,
-	sentinel_level,
-	flora_level,
-	fauna_level,
-	resources,
+	inventory,
+	type,
+    price,
 	discovery_date,
 	screenshot,
-	discoverer,
-	glyph_code,
-    moon,
-    gal_coords
-	) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+	discoverer
+	) VALUES (?,?,?,?,?,?,?,?,?)';
 
-	$types = 'ssssssssssssssss';
+	$types = 'sssssisss';
 
 	try{
 		$stmt = prepared_query($conn, $sql, $params, $types);
 		$stmt->close();
 		header("HTTP/1.1 201 Created.");
-		header("Location: https://nms.bilwis.de/item.php?uuid=" . $uuid . '&type=planet',TRUE,303);
+		header("Location: https://nms.bilwis.de/item.php?uuid=" . $uuid . '&type=ship',TRUE,303);
 		
 	} catch (Exception $ex){
 		echo($ex);

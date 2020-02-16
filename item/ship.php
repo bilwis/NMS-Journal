@@ -6,8 +6,13 @@
 	if (!defined('SECURE_PAGE'))
 	{
         header("HTTP/1.1 301 Moved permanently.");
-        header('Location: https://nms.bilwis.de/item.php?uuid=' . $_GET['uuid'] . '&type=fauna');
-
+        header('Location: https://nms.bilwis.de/item.php?uuid=' . $_GET['uuid'] . '&type=ship');
+        
+        /*
+		header("HTTP/1.1 403 Forbidden.");
+		echo('Error 403: Forbidden. <br> <br> Direct File Access Prohibited.');
+		exit();
+        */
 	}
 
 	//--------------------
@@ -22,11 +27,9 @@
 
 	//Check wheter Planet with given UUID exists
 	$sql = 'SELECT 
-	id, parent_id, name, gender, behaviour,
-	age, diet, bait, ecosystem, activity,
-    height, weight, notes,
-	discovery_date, discoverer, screenshot
-	FROM ' . $fauna_table . ' WHERE id = ?';
+	id, parent_id, name, inventory, type,
+	price, discovery_date, discoverer, screenshot
+	FROM ' . $ships_table . ' WHERE id = ?';
 	$params = [$uuid, ];
 
 	$stmt = prepared_query($conn, $sql, $params);
@@ -35,7 +38,7 @@
 	if ($stmt->num_rows < 1)
 	{
 		header("HTTP/1.1 400 Malformed request.");
-		echo('Error 400: Malformed request. <br><br> System UUID does not exist.');
+		echo('Error 400: Malformed request. <br><br> Ship UUID does not exist.');
 		exit();
 	} elseif ($stmt->num_rows > 1) {
 		header("HTTP/1.1 400 Malformed request.");
@@ -46,41 +49,28 @@
 	//If yes, bind results
 
 	$stmt->bind_result($uuid,
-					  $planet_id,
+					  $system_id,
 					  $name,
-					  $gender_id,
-					  $behaviour_id,
-					  $age_id,
-					  $diet_id,
-					  $bait_id,
-					  $ecosystem_id,
-                      $activity_id,
-                      $height,
-                      $weight,
-                      $note_id,
+					  $inventory,
+					  $type_id,
+					  $price,
 					  $discovery_date,
 					  $discoverer,
-					  $screenshot);
+					  $screenshot
+                      );
 
 	$stmt->fetch();
 
-	$planet_name = get_item_by_uuid($conn, $planet_id, $planets_table);
+	$system_name = get_item_by_uuid($conn, $system_id, $systems_table);
 
 	//--------------------
-	//Get text for gender/behaviour/age/etc. ids
+	//Get text for type id
 	//--------------------
 
 	//Create array with references to the variables,
-	//to replace with names for fauna info display
+	//to replace with names for planet info display
 	$check_array = [
-		[&$gender, $gender_id, $fauna_genders_table],
-		[&$behaviour, $behaviour_id, $fauna_behaviours_table],
-		[&$age, $age_id, $fauna_ages_table],
-		[&$diet, $diet_id, $fauna_diets_table],
-		[&$bait, $bait_id, $fauna_baits_table],
-		[&$ecosystem, $ecosystem_id, $fauna_ecosystems_table],        
-		[&$activity, $activity_id, $fauna_activities_table],
-		[&$note, $note_id, $fauna_notes_table],
+		[&$type, $type_id, $ship_types_table],
 	];
 	
 	//Loop through each paired item_id & item_table, looking up 
@@ -91,17 +81,16 @@
 	}
 
 	//--------------------
-	//Get articles for fauna
+	//Get articles for ship
 	//--------------------
+	$ship_articles =  get_articles_for_uuid($conn, $uuid, $articles_table);
 
-	$fauna_articles =  get_articles_for_uuid($conn, $uuid, $articles_table);
-
-    if (!$fauna_articles == 0)
+	if (!$ship_articles == 0)
 	{
-		foreach($fauna_articles as $article) {
-			$article['source'] = 'Fauna - ' . $name;
+		foreach($ship_articles as $article) {
+			$article['source'] = 'Ship - ' . $name;
 			$article['source_url'] = '#';
-			$article['header_style'] = 'background-color: ' . $fauna_color . '; color: ' . $fauna_header_text_color . ';';
+			$article['header_style'] = 'background-color: ' . $ship_color . '; color: ' . $ship_header_text_color . ';';
 			
 			$articles[] = $article; 
 		}
@@ -133,18 +122,18 @@
 	} 
 
 	$template->uuid = $uuid;
-	$template->source_table = $fauna_table;
-	$template->return_type = 'fauna';
+	$template->source_table = $ships_table;
+	$template->return_type = 'ship';
 
-	$template->page_title = 'Fauna - ' . $name;
-	$template->item_stylesheet = '../style/fauna.css';
+	$template->page_title = 'Ship - ' . $name;
+	$template->item_stylesheet = '../style/ship.css';
 
 	$template->item_name = $name;
-    $template->item_type = 'Fauna';
-    $template->item_in_on = 'on';
-	$template->context_name = $planet_name;
-    $template->context_type = 'Planet';
-    $template->context_url = '../item.php?uuid=' . $planet_id . '&type=' . $planet_id_str;
+    $template->item_type = 'Ship';
+    $template->item_in_on = 'in';
+	$template->context_name = $system_name;
+    $template->context_type = 'Star System';
+    $template->context_url = '../item.php?uuid=' . $system_id . '&type=' . $system_id_str;
 
 	$template->discovery_date = $discovery_date;
 	$template->discoverer = $discoverer;
@@ -156,21 +145,14 @@
 
 	//Set up info_table
 	$info_table = [
-		"Height" => $height . 'm',
-		"Weight" => $weight . 'kg',
-		"Gender" => $gender,
-		"Behaviour" => $behaviour,
-		"Age" => $age,
-		"Diet" => $diet,
-        "Bait" => $bait,
-		"Ecosystem" => $ecosystem,
-		"Activity" => $activity,
-        "Notes" => $note,
+		"Type" => $type,
+		"Inventory" => $inventory,
+		"Price" => number_format_locale($price, 0) . ' U',
 	];
 	
 	$template->info_table = $info_table;
 
-    $template->child_cards = '';
+    $template->child_cards = $child_cards;
 
 	$template->articles = $articles;
 

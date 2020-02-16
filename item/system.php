@@ -19,7 +19,7 @@
 	//Options
 	//--------------------
 
-    $child_types_to_display = [$planet_id_str,];
+    $child_types_to_display = [$planet_id_str, $ship_id_str];
 	
 	//--------------------
 	//Get system data
@@ -137,7 +137,7 @@
             {
 
                 //Child is a planet, fetch biome and resource information in addition
-                //to the discovery and discovery date 
+                //to the discoverer and discovery date 
                 case $planet_id_str:
                     $sql = 'SELECT  
                     biome, resources, discovery_date, discoverer, screenshot, moon
@@ -177,6 +177,39 @@
 
                     //Add resources to card
                     $child_card['resources'] = implode(', ', $child_resources);
+
+                    break;
+                    
+                //Child is a ship, fetch type, inventory and price in addition
+                //to the discoverer and discovery date 
+                case $ship_id_str:
+                    $sql = 'SELECT  
+                    type, inventory, price, discovery_date, discoverer, screenshot
+                    FROM ' . $ships_table . ' WHERE id = ?';
+                    $params = [$child['uuid'], ];
+
+                    $stmt = prepared_query($conn, $sql, $params);
+                    $stmt->store_result();
+
+                    $stmt->bind_result($child_type_id,
+                                       $child_inventory,
+                                       $child_price,
+                                       $child_discovery_date,
+                                       $child_discoverer,
+                                       $child_screenshot);
+
+                    $stmt->fetch();
+
+                    //Add text for type to card             
+                    $child_card['ship_type'] = get_item_by_uuid($conn, $child_type_id, $ship_types_table);
+                    
+                    //Add price and inventory to card
+                    $child_card['inventory'] = $child_inventory;
+                    $child_card['price'] = number_format_locale($child_price, 0) . ' U';
+
+                   
+                    //Add header style
+                    $child_card['header_style'] = 'background-color: ' . $ship_color . '; color: ' . $ship_header_text_color . ';';
 
                     break;
             }
@@ -229,6 +262,7 @@
 
 	$template->item_name = $name;
     $template->item_type = 'Star System';
+    $template->item_in_on = 'in';
 	$template->context_name = $region_name;
     $template->context_type = 'Region';
     $template->context_url = '#';

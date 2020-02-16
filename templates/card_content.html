@@ -90,6 +90,26 @@
             </tr>
         </table>
     </div>
+    <div metal:define-macro="ship" class="card_table">
+        <table>
+            <tr>
+                <th>Type</th>
+                <td tal:content="child_card/ship_type"></td>
+            </tr>
+            <tr>
+                <th>Inventory</th>
+                <td tal:content="child_card/inventory"></td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td tal:content="child_card/price"></td>
+            </tr>
+            <tr>
+                <th>Discovery</th>
+                <td tal:content="child_card/discovery_date">2020-02-04</td>
+            </tr>
+        </table>
+    </div>
 </body>
 
 </html>
