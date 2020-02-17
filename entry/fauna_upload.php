@@ -75,7 +75,7 @@
 		if ($planet_uuid == NULL)
 		{
 			header("HTTP/1.1 400 Malformed request.");
-			echo('System does not exist. Given system parameter: "' . $planet .'".');
+			echo('Planet does not exist. Given planet parameter: "' . $planet .'".');
 			return;
 		}
 	}
@@ -166,7 +166,7 @@
 		$stmt = prepared_query($conn, $sql, $params, $types);
 		$stmt->close();
 		header("HTTP/1.1 201 Created.");
-		header("Location: https://nms.bilwis.de/item.php?uuid=" . $uuid . '&type=planet',TRUE,303);
+		header("Location: https://nms.bilwis.de/item.php?uuid=" . $uuid . '&type=fauna',TRUE,303);
 		
 	} catch (Exception $ex){
 		echo($ex);

@@ -74,4 +74,11 @@
         }
     }
 
+    function handle_tinymce($imageFolder)
+    {   
+        handle_base64($_POST['full_img'], 'full', $imageFolder);
+        handle_base64($_POST['thumb_img'], 'thumb', $imageFolder);
+        return handle_base64($_POST['header_img'], 'header', $imageFolder);
+    }
+
 ?>

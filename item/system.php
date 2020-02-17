@@ -127,101 +127,8 @@
     foreach ($children as $child)
     {
         if (in_array($child['id_str'], $child_types_to_display))
-        {
-            $child_card['name'] = $child['name'];
-            $child_card['type'] = $child['id_str'];
-            $child_card['url'] = 'https://nms.bilwis.de/item.php?uuid=' . $child['uuid'] . '&type=' . $child['id_str'];
-            
-            //Required info: name, url, type, thumb, biome, resource_str, discoverer, discovery_date
-            switch ($child['id_str'])
-            {
-
-                //Child is a planet, fetch biome and resource information in addition
-                //to the discoverer and discovery date 
-                case $planet_id_str:
-                    $sql = 'SELECT  
-                    biome, resources, discovery_date, discoverer, screenshot, moon
-                    FROM ' . $planets_table . ' WHERE id = ?';
-                    $params = [$child['uuid'], ];
-
-                    $stmt = prepared_query($conn, $sql, $params);
-                    $stmt->store_result();
-
-                    $stmt->bind_result($child_biome_id,
-                                       $child_resource_ids_str,
-                                       $child_discovery_date,
-                                       $child_discoverer,
-                                       $child_screenshot,
-                                       $child_moon);
-
-                    $stmt->fetch();
-                    
-                    if ($child_moon)
-                    {
-                        $child_card['type'] = 'moon';
-                    }
-
-                    //Add text for biome to card             
-                    $child_card['biome'] = get_item_by_uuid($conn, $child_biome_id, $biomes_table);
-
-                    //Get text for resources
-                    $child_resource_ids = explode(',', $child_resource_ids_str);
-                    $child_resources = [];
-
-                    foreach($child_resource_ids as $child_resource_id)
-                    {
-                        $child_resources[] = get_item_by_uuid($conn, $child_resource_id, $resources_table);
-                    }
-
-                    $child_card['header_style'] = 'background-color: ' . $planet_color . '; color: ' . $planet_header_text_color . ';';
-
-                    //Add resources to card
-                    $child_card['resources'] = implode(', ', $child_resources);
-
-                    break;
-                    
-                //Child is a ship, fetch type, inventory and price in addition
-                //to the discoverer and discovery date 
-                case $ship_id_str:
-                    $sql = 'SELECT  
-                    type, inventory, price, discovery_date, discoverer, screenshot
-                    FROM ' . $ships_table . ' WHERE id = ?';
-                    $params = [$child['uuid'], ];
-
-                    $stmt = prepared_query($conn, $sql, $params);
-                    $stmt->store_result();
-
-                    $stmt->bind_result($child_type_id,
-                                       $child_inventory,
-                                       $child_price,
-                                       $child_discovery_date,
-                                       $child_discoverer,
-                                       $child_screenshot);
-
-                    $stmt->fetch();
-
-                    //Add text for type to card             
-                    $child_card['ship_type'] = get_item_by_uuid($conn, $child_type_id, $ship_types_table);
-                    
-                    //Add price and inventory to card
-                    $child_card['inventory'] = $child_inventory;
-                    $child_card['price'] = number_format_locale($child_price, 0) . ' U';
-
-                   
-                    //Add header style
-                    $child_card['header_style'] = 'background-color: ' . $ship_color . '; color: ' . $ship_header_text_color . ';';
-
-                    break;
-            }
-            
-            //Add discovery info to card
-            $child_card['discovery_date'] = strftime('%x', strtotime($child_discovery_date));
-            $child_card['discoverer'] = $child_discoverer;
-
-            //Get thumbnail
-            $child_card['thumb'] = str_replace('header', 'thumb', $child_screenshot);
-            
-            $child_cards[] = $child_card;
+        {        
+            $child_cards[] = process_child($child, $conn);
         }
     }
 
@@ -270,6 +177,7 @@
 	$template->discovery_date = $discovery_date;
 	$template->discoverer = $discoverer;
 	$template->screenshot_path = $screenshot;
+    $template->screenshot_path_hi = str_replace('_header', '_full', $screenshot);
 
 	$template->glyph_code = ''; //TODO: move to planet specific template
 

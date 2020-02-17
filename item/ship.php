@@ -138,6 +138,7 @@
 	$template->discovery_date = $discovery_date;
 	$template->discoverer = $discoverer;
 	$template->screenshot_path = $screenshot;
+    $template->screenshot_path_hi = str_replace('_header', '_full', $screenshot);
 
 	$template->glyph_code = '';
 

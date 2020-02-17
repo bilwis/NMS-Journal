@@ -105,17 +105,21 @@
 	//--------------------
 
 	//Parse spectral class
-	$major_class = $spectral_class_raw[0];
-	$subclass = $spectral_class_raw[1];
+	$major_class = substr($spectral_class_raw, 0, 1);
+	$subclass = substr($spectral_class_raw, 1, 1);;
 	$peculiarities = substr($spectral_class_raw, 2);
 
-	$json = file_get_contents('./json/system_data.json');	
+	$json = file_get_contents('../json/system_data.json');	
 	$system_data_params = json_decode($json, TRUE);
 
 	if (!in_array($major_class, $system_data_params['spectral_class']))
 	{
 		header("HTTP/1.1 400 Malformed request.");
 		echo('Major spectral class not recognized. <br> Given class: "' . $major_class .'".');
+        foreach($system_data_params['spectral_class'] as $class)
+        {
+            echo($class . '<br>');
+        }
 		return;
 	}
 

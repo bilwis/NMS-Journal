@@ -10,7 +10,7 @@ require_once('credentials.php');
 //Set locale
 //--------------------
 
-setlocale(LC_ALL, Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+//setlocale(LC_ALL, Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']));
 
 //--------------------
 //Setting table vars
@@ -78,6 +78,21 @@ $ship_id_str = 'ship';
 $tool_id_str = 'tool';
 
 //define('ROOT_PATH', dirname(__FILE__));
+
+//--------------------
+//Get color vars as globals
+//--------------------
+
+require_once('./style/color_vars.php');
+
+//--------------------
+//Setup Regex
+//--------------------
+
+$lightbox_re = '/<img src="([^_]*)_header(\.[^"]*)" \/>/m';
+$lightbox_replacement = '<a href="$1_full$2" class="glightbox"><img src="$1_header$2" /></a>';
+
+$linkbox_re = '/(?><a href="item\.php\?uuid=)(?<uuid>[[:xdigit:]-]*)(?>[^=]*=)(?<type>[^"]*)(?>">)(?<caption>[^<]*)(?><\/a>)/m';
 
 //--------------------
 //Helper functions
@@ -281,7 +296,7 @@ function get_children($mysqli, $parent_id, $children_table)
 			'uuid' => $uuid,
 			'name' => $name,
 		];
-		
+            
 		$children[] = $child;
 	}
 	
@@ -297,60 +312,64 @@ function get_articles_from_childlist($mysqli, $child_list, $articles_table)
 	//child is comprised of [uuid, name, type_str]
 	foreach ($child_list as $child)
 	{
+        
 		$temp_articles = get_articles_for_uuid($mysqli, $child['uuid'], $articles_table);
 		//echo($child['uuid'] . '<br>');
-		
-		foreach ($temp_articles as $article)
-		{
-			$article['source'] = (ucfirst($child['id_str']) . ' - ' . $child['name']);
-			$article['source_url'] = 'item.php?uuid=' . $child['uuid'] . '&type=' . $child['id_str'];
-			
-			$bg_color = 'white';
-			$fg_color = 'black';
-			
-			switch ($child['id_str'])
-			{
-				case $GLOBALS['system_id_str']:
-					$bg_color = $GLOBALS['system_color'];
-					$fg_color = $GLOBALS['system_header_text_color'];
-					break;
-					
-				case $GLOBALS['planet_id_str']:
-					$bg_color = $GLOBALS['planet_color'];
-					$fg_color = $GLOBALS['planet_header_text_color'];
-					break;
-                    
-                case $GLOBALS['fauna_id_str']:
-					$bg_color = $GLOBALS['fauna_color'];
-					$fg_color = $GLOBALS['fauna_header_text_color'];
-					break;
-                    
-                case $GLOBALS['flora_id_str']:
-					$bg_color = $GLOBALS['flora_color'];
-					$fg_color = $GLOBALS['flora_header_text_color'];
-					break;
-                    
-                case $GLOBALS['ship_id_str']:
-					$bg_color = $GLOBALS['ship_color'];
-					$fg_color = $GLOBALS['ship_header_text_color'];
-					break;
-                    
-                case $GLOBALS['poi_id_str']:
-					$bg_color = $GLOBALS['poi_color'];
-					$fg_color = $GLOBALS['poi_header_text_color'];
-					break;
-                    
-                case $GLOBALS['base_id_str']:
-					$bg_color = $GLOBALS['base_color'];
-					$fg_color = $GLOBALS['base_header_text_color'];
-					break;
-					
-			}
 
-			$article['header_style'] = 'background-color: ' . $bg_color . '; color: ' . $fg_color . ';';
-			
-			$articles[] = $article;
-		}	
+        if ($temp_articles != 0)
+        {
+            foreach ($temp_articles as $article)
+            {
+                $article['source'] = (ucfirst($child['id_str']) . ' - ' . $child['name']);
+                $article['source_url'] = 'item.php?uuid=' . $child['uuid'] . '&type=' . $child['id_str'];
+
+                $bg_color = 'white';
+                $fg_color = 'black';
+
+                switch ($child['id_str'])
+                {
+                    case $GLOBALS['system_id_str']:
+                        $bg_color = $GLOBALS['system_color'];
+                        $fg_color = $GLOBALS['system_header_text_color'];
+                        break;
+
+                    case $GLOBALS['planet_id_str']:
+                        $bg_color = $GLOBALS['planet_color'];
+                        $fg_color = $GLOBALS['planet_header_text_color'];
+                        break;
+
+                    case $GLOBALS['fauna_id_str']:
+                        $bg_color = $GLOBALS['fauna_color'];
+                        $fg_color = $GLOBALS['fauna_header_text_color'];
+                        break;
+
+                    case $GLOBALS['flora_id_str']:
+                        $bg_color = $GLOBALS['flora_color'];
+                        $fg_color = $GLOBALS['flora_header_text_color'];
+                        break;
+
+                    case $GLOBALS['ship_id_str']:
+                        $bg_color = $GLOBALS['ship_color'];
+                        $fg_color = $GLOBALS['ship_header_text_color'];
+                        break;
+
+                    case $GLOBALS['poi_id_str']:
+                        $bg_color = $GLOBALS['poi_color'];
+                        $fg_color = $GLOBALS['poi_header_text_color'];
+                        break;
+
+                    case $GLOBALS['base_id_str']:
+                        $bg_color = $GLOBALS['base_color'];
+                        $fg_color = $GLOBALS['base_header_text_color'];
+                        break;
+
+                }
+
+                $article['header_style'] = 'background-color: ' . $bg_color . '; color: ' . $fg_color . ';';
+
+                $articles[] = $article;
+            }
+        }
 	}
 	
 	/*foreach ($articles as $article)
@@ -393,7 +412,8 @@ function get_articles_for_uuid($mysqli, $parent_uuid, $articles_table)
             'timestamp' => $timestamp,
 			'author' => $author,
 			'heading' => $heading,
-			'content' => $content,
+            //'content' => $content,
+			'content' => add_lightbox($content),
 		];
 		
 		$articles[] = $article;
@@ -444,5 +464,284 @@ function number_format_locale($number,$decimals=2) {
                $locale['decimal_point'],
                $locale['thousands_sep']);
  }
+
+
+function add_lightbox($content)
+{
+    return preg_replace($GLOBALS['lightbox_re'], $GLOBALS['lightbox_replacement'], $content);
+}
+
+function process_child($child, $conn)
+{
+    $child_card = [];
+    $child_card['name'] = str_replace('bilwii', 'b.', $child['name']);
+    $child_card['type'] = $child['id_str'];
+    $child_card['url'] = 'item.php?uuid=' . $child['uuid'] . '&type=' . $child['id_str'];
+
+    //Required info: name, url, type, thumb, biome, resource_str, discoverer, discovery_date
+    switch ($child['id_str'])
+    {
+        //Child is a fauna item, fetch ecosystem, activity, diet
+        //+ discovery and discovery date 
+        case $GLOBALS['fauna_id_str']:
+            $sql = 'SELECT  
+            ecosystem, activity, diet, discovery_date, discoverer, screenshot
+            FROM ' . $GLOBALS['fauna_table'] . ' WHERE id = ?';
+            $params = [$child['uuid'], ];
+
+            $stmt = prepared_query($conn, $sql, $params);
+            $stmt->store_result();
+
+            $stmt->bind_result($child_ecosystem_id,
+                               $child_activity_id,
+                               $child_diet_id,
+                               $child_discovery_date,
+                               $child_discoverer,
+                               $child_screenshot);
+
+            $stmt->fetch();
+
+            //Add text for table items to card             
+            $child_card['ecosystem'] = get_item_by_uuid($conn, $child_ecosystem_id, $GLOBALS['fauna_ecosystems_table']);
+            $child_card['activity'] = get_item_by_uuid($conn, $child_activity_id, $GLOBALS['fauna_activities_table']);
+            $child_card['diet'] = get_item_by_uuid($conn, $child_diet_id, $GLOBALS['fauna_diets_table']);
+
+            //Add header style
+            $child_card['header_style'] = 'background-color: ' . $GLOBALS['fauna_color'] . '; color: ' . $GLOBALS['fauna_header_text_color'] . ';';
+
+            break;
+        
+        //Child is a flora item, fetch ecosystem, activity, diet
+        //+ discovery and discovery date 
+        case $GLOBALS['flora_id_str']:
+            $sql = 'SELECT  
+            age, roots, food, primary_element, secondary_element, discovery_date, discoverer, screenshot
+            FROM ' . $GLOBALS['flora_table'] . ' WHERE id = ?';
+            $params = [$child['uuid'], ];
+
+            $stmt = prepared_query($conn, $sql, $params);
+            $stmt->store_result();
+
+            $stmt->bind_result($child_age_id,
+                               $child_roots_id,
+                               $child_food_id,
+                               $child_prim_resource_id,
+                               $child_sec_resource_id,
+                               $child_discovery_date,
+                               $child_discoverer,
+                               $child_screenshot);
+
+            $stmt->fetch();
+
+            //Add text for table items to card             
+            $child_card['age'] = get_item_by_uuid($conn, $child_age_id, $GLOBALS['flora_ages_table']);
+            $child_card['roots'] = get_item_by_uuid($conn, $child_roots_id, $GLOBALS['flora_roots_table']);
+            $child_card['food'] = get_item_by_uuid($conn, $child_food_id, $GLOBALS['flora_food_table']);
+            $child_card['primary_resource'] = get_item_by_uuid($conn, $child_prim_resource_id, $GLOBALS['resources_table']);
+            $child_card['secondary_resource'] = get_item_by_uuid($conn, $child_sec_resource_id, $GLOBALS['resources_table']);
+
+            if ($child_card['primary_resource'] == '')
+            {
+                $child_card['primary_resource'] = ' - ';
+            }
+
+            if ($child_card['secondary_resource'] == '')
+            {
+                $child_card['secondary_resource'] = ' - ';
+            }
+
+            //Add header style
+            $child_card['header_style'] = 'background-color: ' . $GLOBALS['flora_color'] . '; color: ' . $GLOBALS['flora_header_text_color'] . ';';
+
+            break;
+
+        //Child is a PoI, fetch type, long + lat
+        //+ discovery and discovery date 
+        case $GLOBALS['poi_id_str']:
+            $sql = 'SELECT  
+            type, planet_lat, planet_long, discovery_date, discoverer, screenshot
+            FROM ' . $GLOBALS['pois_table'] . ' WHERE id = ?';
+            $params = [$child['uuid'], ];
+
+            $stmt = prepared_query($conn, $sql, $params);
+            $stmt->store_result();
+
+            $stmt->bind_result($child_type_id,
+                               $child_lat,
+                               $child_long,
+                               $child_discovery_date,
+                               $child_discoverer,
+                               $child_screenshot);
+
+            $stmt->fetch();
+
+            //Add text for table items to card             
+            $child_card['poi_type'] = get_item_by_uuid($conn, $child_type_id, $GLOBALS['poi_types_table']);
+            $child_card['lat'] = $child_lat;
+            $child_card['long'] = $child_long;
+
+            $child_card['type'] = 'PoI';
+
+            //Add header style
+            $child_card['header_style'] = 'background-color: ' . $GLOBALS['poi_color'] . '; color: ' . $GLOBALS['poi_header_text_color'] . ';';
+
+            break;
+
+        //Child is a Base, fetch facilities, long + lat
+        //+ discovery and discovery date    
+        case $GLOBALS['base_id_str']:
+            $sql = 'SELECT  
+            facilities, planet_lat, planet_long, discovery_date, discoverer, screenshot
+            FROM ' . $GLOBALS['bases_table'] . ' WHERE id = ?';
+            $params = [$child['uuid'], ];
+
+            $stmt = prepared_query($conn, $sql, $params);
+            $stmt->store_result();
+
+            $stmt->bind_result($child_facilities_ids_str,
+                               $child_lat,
+                               $child_long,
+                               $child_discovery_date,
+                               $child_discoverer,
+                               $child_screenshot);
+
+            $stmt->fetch();
+
+            //Add text for table items to card             
+            $child_card['lat'] = $child_lat;
+            $child_card['long'] = $child_long;
+
+            //Get text for resources
+            $child_facilities_ids = explode(',', $child_facilities_ids_str);
+            $child_facilities = [];
+
+            foreach($child_facilities_ids as $child_facilities_id)
+            {
+                $child_facilities[] = get_item_by_uuid($conn, $child_facilities_id, $GLOBALS['base_facilities_table']);
+            }
+
+            //Add resources to card
+            $child_card['facilities'] = implode(', ', $child_facilities);
+
+            //Add header style
+            $child_card['header_style'] = 'background-color: ' . $GLOBALS['base_color'] . '; color: ' . $GLOBALS['base_header_text_color'] . ';';
+
+            break;
+            
+        //Child is a planet, fetch biome and resource information in addition
+        //to the discoverer and discovery date 
+        case $GLOBALS['planet_id_str']:
+            $sql = 'SELECT  
+            biome, resources, discovery_date, discoverer, screenshot, moon
+            FROM ' . $GLOBALS['planets_table'] . ' WHERE id = ?';
+            $params = [$child['uuid'], ];
+
+            $stmt = prepared_query($conn, $sql, $params);
+            $stmt->store_result();
+
+            $stmt->bind_result($child_biome_id,
+                               $child_resource_ids_str,
+                               $child_discovery_date,
+                               $child_discoverer,
+                               $child_screenshot,
+                               $child_moon);
+
+            $stmt->fetch();
+
+            if ($child_moon)
+            {
+                $child_card['type'] = 'moon';
+            }
+
+            //Add text for biome to card             
+            $child_card['biome'] = get_item_by_uuid($conn, $child_biome_id, $GLOBALS['biomes_table']);
+
+            //Get text for resources
+            $child_resource_ids = explode(',', $child_resource_ids_str);
+            $child_resources = [];
+
+            foreach($child_resource_ids as $child_resource_id)
+            {
+                $child_resources[] = get_item_by_uuid($conn, $child_resource_id, $GLOBALS['resources_table']);
+            }
+
+            $child_card['header_style'] = 'background-color: ' . $GLOBALS['planet_color'] . '; color: ' . $GLOBALS['planet_header_text_color'] . ';';
+
+            //Add resources to card
+            $child_card['resources'] = implode(', ', $child_resources);
+
+            break;
+
+        //Child is a ship, fetch type, inventory and price in addition
+        //to the discoverer and discovery date 
+        case $GLOBALS['ship_id_str']:
+            $sql = 'SELECT  
+            type, inventory, price, discovery_date, discoverer, screenshot
+            FROM ' . $GLOBALS['ships_table'] . ' WHERE id = ?';
+            $params = [$child['uuid'], ];
+
+            $stmt = prepared_query($conn, $sql, $params);
+            $stmt->store_result();
+
+            $stmt->bind_result($child_type_id,
+                               $child_inventory,
+                               $child_price,
+                               $child_discovery_date,
+                               $child_discoverer,
+                               $child_screenshot);
+
+            $stmt->fetch();
+
+            //Add text for type to card             
+            $child_card['ship_type'] = get_item_by_uuid($conn, $child_type_id, $GLOBALS['ship_types_table']);
+
+            //Add price and inventory to card
+            $child_card['inventory'] = $child_inventory;
+            $child_card['price'] = number_format_locale($child_price, 0) . ' U';
+
+
+            //Add header style
+            $child_card['header_style'] = 'background-color: ' . $GLOBALS['ship_color'] . '; color: ' . $GLOBALS['ship_header_text_color'] . ';';
+
+            break;
+            
+        default:
+            return '';
+            
+    }
+
+    //Add discovery info to card
+    $child_card['discovery_date'] = strftime('%x', strtotime($child_discovery_date));
+    $child_card['discoverer'] = $child_discoverer;
+
+    //Get thumbnail
+    $child_card['thumb'] = str_replace('header', 'thumb', $child_screenshot);
+    
+    return $child_card;
+}
+
+/*
+//TODO: Produce child cards to hover on link, preferably using templates
+
+function add_linkbox($content)
+{
+
+    
+    return preg_replace_callback($GLOBALS['linkbox_re'], 'link_card_creator', $content);
+}
+
+function link_card_creator($matches)
+{
+    $uuid = $matches['uuid'];
+    $type = $matches['type'];
+    $caption = $matches['caption'];
+    
+    $return_str = '<div class="linkbox>
+        <a href="item.php?uuid='.$uuid.'&type='.$type.">.$caption.</a>
+        <span ;
+    
+}
+
+*/
 
 ?>

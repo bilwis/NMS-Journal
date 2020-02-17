@@ -3,12 +3,13 @@
 
 <head>
     <title tal:content="page_title">Untitled Document</title>
-
+    
+    <tal:block condition="verified" metal:use-macro="../templates/article_entry.html/tinymce_resizer" />
     <tal:block condition="verified" metal:use-macro="../templates/article_entry.html/tinymce_load" />
     <tal:block condition="verified" metal:use-macro="../templates/article_entry.html/tinymce_setup" />
     <link rel="stylesheet" type="text/css" tal:attributes="href item_stylesheet" />
     <link rel="stylesheet" type="text/css" href="../libs/slick/slick.css" />
-    
+    <link rel="stylesheet" href="../style/glightbox.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 
@@ -17,7 +18,7 @@
     <h3 class="context_str"><i><span tal:content="item_type">XXX</span> <span tal:content="item_in_on">in/on</span> the <a tal:content="context_name" tal:attributes="href context_url">XXX</a> <span tal:content="context_type">XXX</span>.</i></h3>
     <h5 class="disco_str">Discovered on <span tal:content="discovery_date">XX-XX-XXXX</span> by <span tal:content="discoverer">bilwis</span></h5>
 
-    <div class="img_box"><img class="cover_img" tal:attributes="src screenshot_path; alt item_name" src="https://nms.bilwis.de/pics/275850_20160828155312_1.png" alt="" /></div>
+    <div class="img_box"><a tal:attributes="href screenshot_path_hi" class="glightbox"><img class="cover_img" tal:attributes="src screenshot_path; alt item_name"/></a></div>
 
     <table class="info_table">
         <thead>
@@ -55,6 +56,8 @@
     <script type="text/javascript" src="../libs/jquery-3.4.1.js"></script>
     <script type="text/javascript" src="../libs/slick/slick.min.js"></script>
     <script type="text/javascript" src="../js/slick_item_children.js"></script>
+    <script type="text/javascript" src="../libs/glightbox.min.js"></script>
+    <script type="text/javascript" src="../js/lightbox_init.js" defer="true"></script>
 </body>
 
 </html>
