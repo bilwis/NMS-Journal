@@ -9,6 +9,8 @@
 
 body {
     background-color: var(--main-bg-color);
+    /*background: rgb(89,80,60);
+    background: linear-gradient(170deg, rgba(89,80,60,1) 0%, rgba(18,22,25,1) 100%);*/
     color: var(--main-text-color);
     font-size: 20px;
     font-family: GeoSans Light Regular, Georgia;
@@ -438,6 +440,12 @@ label[for="heading"] {
     }
 }
 
+.paragraph {
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 .article_box {
     display: block;
     margin-left: auto;
@@ -446,9 +454,47 @@ label[for="heading"] {
     max-width: 80%;
 
     box-sizing: border-box;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
 
     background-color: var(--header-color);
     border: 1px solid var(--border-color);
+}
+
+/* Tooltip container */
+.linkbox {
+  position: relative;
+  display: inline;
+  border-bottom: 1px dotted; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.linkbox .linkbox_content {
+    visibility: hidden;
+    width: 252px;
+    bottom: 120%;
+    left: 50%;
+    margin-left: -126px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+
+    background-color: var(--header-color);
+    border: 1px solid var(--border-color);
+
+    font-size: 16px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.linkbox:hover .linkbox_content {
+  visibility: visible;
+}
+
+.linkbox:hover a {
+  text-decoration: none;
 }

@@ -2,6 +2,15 @@
 <html>
 
 <body>
+    <div metal:define-macro="card_common">
+        <div class="card_header" tal:attributes="style child_card/header_style"><a tal:content="child_card/name" tal:attributes="href child_card/url">Item Name</a></div>
+        <div class="card_type"><i tal:content="child_card/type">Planet</i></div>
+        <div class="card_image"><img tal:attributes="src child_card/thumb" /></div>
+        <div class="card_content">
+            <tal:block metal:use-macro="../templates/card_content.html/${child_card/type}" />
+        </div>
+    </div>
+    
     <div metal:define-macro="planet" class="card_table">
         <table>
             <tr>

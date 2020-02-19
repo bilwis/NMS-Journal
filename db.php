@@ -10,7 +10,18 @@ require_once('credentials.php');
 //Set locale
 //--------------------
 
-//setlocale(LC_ALL, Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+setlocale(LC_ALL, Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+
+//--------------------
+//Set debugging
+//--------------------
+
+/*
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', dirname(__FILE__) . '/error_log.txt');
+error_reporting(E_ALL);
+*/
 
 //--------------------
 //Setting table vars
@@ -92,6 +103,9 @@ require_once('./style/color_vars.php');
 $lightbox_re = '/<img src="([^_]*)_header(\.[^"]*)" \/>/m';
 $lightbox_replacement = '<a href="$1_full$2" class="glightbox"><img src="$1_header$2" /></a>';
 
+$p_to_div_re = ['/<p>/', '/<\/p>/'];
+$p_to_div_replacement = ['<div class="paragraph">', '</div>'];
+
 $linkbox_re = '/(?><a href="item\.php\?uuid=)(?<uuid>[[:xdigit:]-]*)(?>[^=]*=)(?<type>[^"]*)(?>">)(?<caption>[^<]*)(?><\/a>)/m';
 
 //--------------------
@@ -114,6 +128,24 @@ function prepared_query($mysqli, $sql, $params, $types = "")
         echo($sql);
 		die();
 	}
+}
+
+
+function get_table_for_type($type_id)
+{
+    switch($type_id)
+    {
+        case $GLOBALS['region_id_str']: return $GLOBALS['regions_table'];
+        case $GLOBALS['system_id_str']: return $GLOBALS['systems_table'];
+        case $GLOBALS['planet_id_str']: return $GLOBALS['planets_table'];
+        case $GLOBALS['fauna_id_str']: return $GLOBALS['fauna_table'];
+        case $GLOBALS['flora_id_str']: return $GLOBALS['flora_table'];
+        case $GLOBALS['base_id_str']: return $GLOBALS['bases_table'];
+        case $GLOBALS['poi_id_str']: return $GLOBALS['pois_table'];
+        case $GLOBALS['ship_id_str']: return $GLOBALS['ships_table'];
+        case $GLOBALS['tool_id_str']: return $GLOBALS['tools_table'];
+        default: return NULL;
+    }
 }
 
 function get_item_by_uuid($mysqli, $uuid, $item_table, $bound_lower = TRUE)
@@ -413,7 +445,7 @@ function get_articles_for_uuid($mysqli, $parent_uuid, $articles_table)
 			'author' => $author,
 			'heading' => $heading,
             //'content' => $content,
-			'content' => add_lightbox($content),
+			'content' => process_article_content($content, $mysqli),
 		];
 		
 		$articles[] = $article;
@@ -466,15 +498,17 @@ function number_format_locale($number,$decimals=2) {
  }
 
 
-function add_lightbox($content)
-{
-    return preg_replace($GLOBALS['lightbox_re'], $GLOBALS['lightbox_replacement'], $content);
-}
-
+//Takes a child array with fields type and uuid set,
+// and returns it as a child_card with additional informatino
 function process_child($child, $conn)
 {
+    if ($child['uuid'] == '' || $child['id_str'] == '')
+    {
+        throw new Exception('process_child called without uuid or id_str!');
+        return NULL;
+    }
+    
     $child_card = [];
-    $child_card['name'] = str_replace('bilwii', 'b.', $child['name']);
     $child_card['type'] = $child['id_str'];
     $child_card['url'] = 'item.php?uuid=' . $child['uuid'] . '&type=' . $child['id_str'];
 
@@ -485,14 +519,15 @@ function process_child($child, $conn)
         //+ discovery and discovery date 
         case $GLOBALS['fauna_id_str']:
             $sql = 'SELECT  
-            ecosystem, activity, diet, discovery_date, discoverer, screenshot
-            FROM ' . $GLOBALS['fauna_table'] . ' WHERE id = ?';
+            name, ecosystem, activity, diet, discovery_date, discoverer, screenshot
+            FROM ' . get_table_for_type($child['id_str']) . ' WHERE id = ?';
             $params = [$child['uuid'], ];
 
             $stmt = prepared_query($conn, $sql, $params);
             $stmt->store_result();
 
-            $stmt->bind_result($child_ecosystem_id,
+            $stmt->bind_result($child['name'],
+                               $child_ecosystem_id,
                                $child_activity_id,
                                $child_diet_id,
                                $child_discovery_date,
@@ -515,14 +550,15 @@ function process_child($child, $conn)
         //+ discovery and discovery date 
         case $GLOBALS['flora_id_str']:
             $sql = 'SELECT  
-            age, roots, food, primary_element, secondary_element, discovery_date, discoverer, screenshot
-            FROM ' . $GLOBALS['flora_table'] . ' WHERE id = ?';
+            name, age, roots, food, primary_element, secondary_element, discovery_date, discoverer, screenshot
+            FROM ' . get_table_for_type($child['id_str']) . ' WHERE id = ?';
             $params = [$child['uuid'], ];
 
             $stmt = prepared_query($conn, $sql, $params);
             $stmt->store_result();
 
-            $stmt->bind_result($child_age_id,
+            $stmt->bind_result($child['name'],
+                               $child_age_id,
                                $child_roots_id,
                                $child_food_id,
                                $child_prim_resource_id,
@@ -559,14 +595,15 @@ function process_child($child, $conn)
         //+ discovery and discovery date 
         case $GLOBALS['poi_id_str']:
             $sql = 'SELECT  
-            type, planet_lat, planet_long, discovery_date, discoverer, screenshot
-            FROM ' . $GLOBALS['pois_table'] . ' WHERE id = ?';
+            name, type, planet_lat, planet_long, discovery_date, discoverer, screenshot
+            FROM ' . get_table_for_type($child['id_str']) . ' WHERE id = ?';
             $params = [$child['uuid'], ];
 
             $stmt = prepared_query($conn, $sql, $params);
             $stmt->store_result();
 
-            $stmt->bind_result($child_type_id,
+            $stmt->bind_result($child['name'],
+                               $child_type_id,
                                $child_lat,
                                $child_long,
                                $child_discovery_date,
@@ -591,14 +628,15 @@ function process_child($child, $conn)
         //+ discovery and discovery date    
         case $GLOBALS['base_id_str']:
             $sql = 'SELECT  
-            facilities, planet_lat, planet_long, discovery_date, discoverer, screenshot
-            FROM ' . $GLOBALS['bases_table'] . ' WHERE id = ?';
+            name, facilities, planet_lat, planet_long, discovery_date, discoverer, screenshot
+            FROM ' . get_table_for_type($child['id_str']) . ' WHERE id = ?';
             $params = [$child['uuid'], ];
 
             $stmt = prepared_query($conn, $sql, $params);
             $stmt->store_result();
 
-            $stmt->bind_result($child_facilities_ids_str,
+            $stmt->bind_result($child['name'],
+                               $child_facilities_ids_str,
                                $child_lat,
                                $child_long,
                                $child_discovery_date,
@@ -632,14 +670,15 @@ function process_child($child, $conn)
         //to the discoverer and discovery date 
         case $GLOBALS['planet_id_str']:
             $sql = 'SELECT  
-            biome, resources, discovery_date, discoverer, screenshot, moon
-            FROM ' . $GLOBALS['planets_table'] . ' WHERE id = ?';
+            name, biome, resources, discovery_date, discoverer, screenshot, moon
+            FROM ' . get_table_for_type($child['id_str']) . ' WHERE id = ?';
             $params = [$child['uuid'], ];
 
             $stmt = prepared_query($conn, $sql, $params);
             $stmt->store_result();
 
-            $stmt->bind_result($child_biome_id,
+            $stmt->bind_result($child['name'],
+                               $child_biome_id,
                                $child_resource_ids_str,
                                $child_discovery_date,
                                $child_discoverer,
@@ -676,14 +715,15 @@ function process_child($child, $conn)
         //to the discoverer and discovery date 
         case $GLOBALS['ship_id_str']:
             $sql = 'SELECT  
-            type, inventory, price, discovery_date, discoverer, screenshot
-            FROM ' . $GLOBALS['ships_table'] . ' WHERE id = ?';
+            name, type, inventory, price, discovery_date, discoverer, screenshot
+            FROM ' . get_table_for_type($child['id_str']) . ' WHERE id = ?';
             $params = [$child['uuid'], ];
 
             $stmt = prepared_query($conn, $sql, $params);
             $stmt->store_result();
 
-            $stmt->bind_result($child_type_id,
+            $stmt->bind_result($child['name'],
+                               $child_type_id,
                                $child_inventory,
                                $child_price,
                                $child_discovery_date,
@@ -709,6 +749,9 @@ function process_child($child, $conn)
             return '';
             
     }
+    
+    //Truncate bilwii in discovery names to b.    
+    $child_card['name'] = str_replace('bilwii', 'b.', $child['name']);
 
     //Add discovery info to card
     $child_card['discovery_date'] = strftime('%x', strtotime($child_discovery_date));
@@ -720,21 +763,50 @@ function process_child($child, $conn)
     return $child_card;
 }
 
-/*
+function process_article_content($content, $conn)
+{
+    return add_lightbox(add_linkbox(swap_p_for_div($content), $conn));
+}
+
+function swap_p_for_div($content)
+{
+    return preg_replace($GLOBALS['p_to_div_re'], $GLOBALS['p_to_div_replacement'], $content);
+}
+
+function add_lightbox($content)
+{
+    return preg_replace($GLOBALS['lightbox_re'], $GLOBALS['lightbox_replacement'], $content);
+}
+
 //TODO: Produce child cards to hover on link, preferably using templates
 
-function add_linkbox($content)
+function add_linkbox($content, $conn)
+{
+    $template = new PHPTAL('./templates/link_card.html');
+    
+    return preg_replace_callback($GLOBALS['linkbox_re'], 
+                                 function ($matches) use ($template, $conn)
+                                 {
+                                    $uuid = $matches['uuid'];
+                                    $type = $matches['type'];
+                                    $caption = $matches['caption'];
+                                     
+                                    $card = process_child(['uuid' => $uuid, 'id_str' => $type], $conn);
+                                    
+                                    $template->child_card = $card;
+                                    $template->hyperlink = 'item.php?uuid=' . $uuid . '&type=' . $type;
+                                    $template->caption = $caption;
+                                    return $template->execute();
+                                     
+                                 }, $content);
+}
+
+/*
+function link_card_creator($matches)
 {
 
     
-    return preg_replace_callback($GLOBALS['linkbox_re'], 'link_card_creator', $content);
-}
-
-function link_card_creator($matches)
-{
-    $uuid = $matches['uuid'];
-    $type = $matches['type'];
-    $caption = $matches['caption'];
+    
     
     $return_str = '<div class="linkbox>
         <a href="item.php?uuid='.$uuid.'&type='.$type.">.$caption.</a>
