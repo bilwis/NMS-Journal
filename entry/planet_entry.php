@@ -5,17 +5,14 @@
 	
 	header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
 
+/*
     if (!defined('SECURE_PAGE'))
 	{
         header("HTTP/1.1 301 Moved permanently.");
-        header('Location: https://nms.bilwis.de/entry.php?type=planet');
-        
-        /*
-		header("HTTP/1.1 403 Forbidden.");
-		echo('Error 403: Forbidden. <br> <br> Direct File Access Prohibited.');
-		exit();
-        */
+        header('Location: entry.php?type=planet');
+    
 	}
+    */
 	//--------------------
 	//Template Setup
 	//--------------------

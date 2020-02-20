@@ -491,8 +491,10 @@ label[for="heading"] {
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
-.linkbox:hover .linkbox_content {
-  visibility: visible;
+@media only screen and (min-width: 601px) {
+    .linkbox:hover .linkbox_content {
+      visibility: visible;
+    }
 }
 
 .linkbox:hover a {

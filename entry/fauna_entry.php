@@ -8,7 +8,7 @@
     if (!defined('SECURE_PAGE'))
 	{
         header("HTTP/1.1 301 Moved permanently.");
-        header('Location: https://nms.bilwis.de/entry.php?type=fauna');
+        header('Location: entry.php?type=fauna');
 
 	}
 	//--------------------

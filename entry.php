@@ -6,7 +6,7 @@
 	//--------------------
 	//Security Setup
 	//--------------------
-	
+
 	header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
 	session_start();
 
@@ -22,7 +22,6 @@
 	}
     
 	define('SECURE_PAGE', true);
-
 
 	//--------------------
 	//Process GET content

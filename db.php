@@ -94,7 +94,7 @@ $tool_id_str = 'tool';
 //Get color vars as globals
 //--------------------
 
-require_once('./style/color_vars.php');
+require_once('style/color_vars.php');
 
 //--------------------
 //Setup Regex
