@@ -204,10 +204,10 @@ a:active {
 
 .card_header {
     border: 1px solid var(--border-color);
-    margin: -10px 0 0 -20px;
+    margin: -10px 0 0 -15px;
     height: 50px;
     padding: 12px 0px 10px 0px;
-    width: calc(100% + 40px);
+    width: calc(100% + 30px);
     box-sizing: border-box;
 
     font-size: 20px;
@@ -444,6 +444,7 @@ label[for="heading"] {
     display: block;
     margin-top: 1em;
     margin-bottom: 1em;
+    text-align: justify;
 }
 
 .article_box {
