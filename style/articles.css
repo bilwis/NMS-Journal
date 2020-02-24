@@ -1,0 +1,152 @@
+@import url("general.css");
+@import url("cards.css");
+
+.article_header {
+    border: 1px solid var(--border-color);
+    margin: -10px 0 0 -20px;
+    height: 70px;
+    padding: 10 0 10 0;
+    width: calc(100% + 40px);
+    box-sizing: border-box;
+    border-collapse: collapse;
+
+}
+
+.article_header td {
+    border: 0px solid var(--border-color);
+}
+
+.article_heading {
+    font-size: 24px;
+    text-align: center;
+
+    font-weight: 900;
+    vertical-align: bottom;
+}
+
+.right_arrow {
+    border: solid hsla(0, 0%, 0%, 0.50);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    margin: 3px 0px 1px 3px;
+}
+
+.article_source {
+    width: 33%;
+    text-align: left;
+    padding-left: 5%;
+    vertical-align: top;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 600px) {
+    .article_source {
+        font-size: 0.85em;
+        width: 45%;
+        max-width: 125px;
+    }
+}
+
+.article_source a {
+    color: inherit;
+    font-weight: 700;
+}
+
+
+
+.article_source a:link {
+    text-decoration: none;
+}
+
+.article_source a:visited {
+    text-decoration: none;
+}
+
+.article_source a:hover {
+    text-decoration: underline;
+}
+
+.article_source a:active {
+    text-decoration: underline;
+}
+
+.article_timestamp {
+    width: 33%;
+    text-align: right;
+    padding-right: 5%;
+    vertical-align: top;
+}
+
+@media screen and (max-width: 600px) {
+    .article_timestamp {
+        font-size: 0.85em;
+        width: 45%;
+    }
+}
+
+.paragraph {
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    text-align: justify;
+}
+
+.article_box {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 60px;
+    max-width: 80%;
+
+    box-sizing: border-box;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    background-color: var(--header-color);
+    border: 1px solid var(--border-color);
+}
+
+/* Tooltip container */
+.linkbox {
+  position: relative;
+  display: inline;
+  border-bottom: 1px dotted; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.linkbox .linkbox_content {
+    visibility: hidden;
+    width: 252px;
+    bottom: 120%;
+    left: 50%;
+    margin-left: -126px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+
+    background-color: var(--header-color);
+    border: 1px solid var(--border-color);
+
+    font-size: 16px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+@media only screen and (min-width: 601px) {
+    .linkbox:hover .linkbox_content {
+      visibility: visible;
+    }
+}
+
+.linkbox:hover a {
+  text-decoration: none;
+}

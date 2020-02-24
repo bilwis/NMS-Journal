@@ -1,4 +1,5 @@
 <?php
+
 	//--------------------
 	//Security Setup
 	//--------------------
@@ -200,9 +201,16 @@
 
     $template->child_cards = $child_cards;
 
-	$template->articles = $articles;
+    $_SESSION['articles'] = $articles;
+    $template->article_pagination = 'paginate.php?type=articles&page=0';
 
-
+    if (!empty($articles))
+    {
+        $template->any_articles = TRUE;
+    } else {
+        $template->any_articles = FALSE;
+    }
+	//$template->articles = $articles;
 
 	//--------------------
 	//Execute template

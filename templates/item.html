@@ -43,13 +43,16 @@
         </table>
     </div>
 
-    <div tal:condition="php: articles OR verified">
+    <div tal:condition="php: any_articles OR verified">
 
         <h3 class="diary_header">DIARY ENTRIES</h3>
 
         <tal:block condition="verified" metal:use-macro="../templates/article_entry.html/form" />
 
-        <tal:block conditions="articles" metal:use-macro="../templates/article_display.html/article_display" />
+        <div class="article_frame" id="articles">
+            <!--<iframe tal:condition="any_articles" scrolling="no" seamless="seamless" tal:attributes="src article_pagination"></iframe>!-->
+        </div>
+        <!--<tal:block conditions="articles" metal:use-macro="../templates/article_display.html/article_display" />!-->
 
     </div>
 
@@ -58,6 +61,7 @@
     <script type="text/javascript" src="../js/slick_item_children.js"></script>
     <script type="text/javascript" src="../libs/glightbox.min.js"></script>
     <script type="text/javascript" src="../js/lightbox_init.js" defer="true"></script>
+    <!--<script type="text/javascript" src="../js/paginate.js"></script>!-->
 </body>
 
 </html>

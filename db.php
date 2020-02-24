@@ -10,7 +10,7 @@ require_once('credentials.php');
 //Set locale
 //--------------------
 
-setlocale(LC_ALL, Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+//setlocale(LC_ALL, Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']));
 
 //--------------------
 //Set debugging

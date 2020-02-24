@@ -1,0 +1,70 @@
+@import url("general.css");
+
+.child_card {
+    margin: 10px 20px;
+
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+
+    background-color: var(--header-color);
+    border: 1px solid var(--border-color);
+
+    font-size: 16px;
+    /*
+    width: 250px;
+    min-width: 250px;
+    max-width: 232px;*/
+    
+}
+
+.card_image img {
+    max-width: 100%;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.card_header {
+    border: 1px solid var(--border-color);
+    margin: -10px 0 0 -15px;
+    height: 50px;
+    padding: 12px 0px 10px 0px;
+    width: calc(100% + 30px);
+    box-sizing: border-box;
+
+    font-size: 20px;
+    text-align: center;
+
+    font-weight: 900;
+    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card_type {
+    text-align: center;
+    text-transform: capitalize;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+.card_table table {
+    width: 100%;
+    border-collapse: separate;
+    background-color: var(--header-highlight-color);
+    border: 1px solid black;
+    border-spacing: 5px 10px;
+    /*padding: 5px 0px;*/
+}
+
+.card_table th {
+    width: 40%;
+    /*text-align: left;*/
+    padding-left: 5px;
+}
+
+.card_table td {
+    padding-left: 5px;
+}
